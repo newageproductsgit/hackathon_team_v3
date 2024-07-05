@@ -1,6 +1,9 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 
+
 function index(props) {
+   
     return (
         <div>
            <div class="container">
@@ -17,7 +20,7 @@ function index(props) {
         </div>
         
         <div class="image-container">
-            <img src="/assets/img3.jpg" alt="KBC Host" style={{width:'500px'}}/>
+            <img src="/assets/img2.webp" alt="KBC Host" style={{width:'500px'}}/>
         </div>
     </div>
         </div>
