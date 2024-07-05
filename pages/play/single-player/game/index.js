@@ -15,6 +15,8 @@ const disabled={
   transition: 'all 0.3s ease',
   color:'#000',
   pointerEvent:'none',
+  backgroundColor:'#dbc4c4',
+  cursor:'defult'
 };
 
 const GameQuestionContainer = () => {
