@@ -37,31 +37,31 @@ model questions {
 }
 
 model user_responses {
-  id          Int        @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   user_id     Int?
   question_id Int?
   answer_id   Int?
   is_correct  Boolean?
-  users       users?     @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_responses_ibfk_1")
-  questions   questions? @relation(fields: [question_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_responses_ibfk_2")
-  answers     answers?   @relation(fields: [answer_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_responses_ibfk_3")
+  users       game_users? @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_responses_ibfk_1")
+  questions   questions?  @relation(fields: [question_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_responses_ibfk_2")
+  answers     answers?    @relation(fields: [answer_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_responses_ibfk_3")
 
   @@index([answer_id], map: "answer_id")
   @@index([question_id], map: "question_id")
   @@index([user_id], map: "user_id")
 }
 
-model users {
-  id             Int              @id @default(autoincrement())
-  username       String           @db.VarChar(255)
-  score          Int?             @default(0)
-  user_responses user_responses[]
-}
-
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model room_tbl {
   id   Int @id @default(autoincrement())
   busy Int @default(0)
+}
+
+model game_users {
+  id             Int              @id @default(autoincrement())
+  username       String           @db.VarChar(255)
+  score          Int?             @default(0)
+  user_responses user_responses[]
 }
 
 enum questions_difficulty_level {
