@@ -3,33 +3,40 @@ import styles from "../../question.module.css";
 
 const GameQuestionContainer = () => {
   const [timeLeft, setTimeLeft] = useState(30);
+  const [showPopup, setShowPopup] = useState(false);
+  const [showDisable, setShowDisable] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+          // clearInterval(timer);
+          setShowPopup(true);
+        }
+        return prevTime > 0 ? prevTime - 1 : 0;
+      });
     }, 1000);
 
     return () => clearInterval(timer);
   }, []);
 
+  const handleDisable = () => {
+    setShowDisable(true);
+  };
+const handleRestart = () => {
+    setShowPopup(false);
+    setTimeLeft(30);
+  };
   return (
     <div className={styles.gameContainer}>
       <div className={styles.timer}>Time left - {timeLeft} seconds</div>
       <h1 className={styles.title}>Question 3/15</h1>
       <div className={styles.prizeLevel}>Price won: $1,000,000</div>
       <div className={styles.content}>
-        <main
-        // style={{
-        //   display: "flex",
-        //   flexDirection: "column",
-        //   justifyContent: "center",
-        //   alignItems: "center",
-        // }}
-        >
+        <main>
           <div className={styles.questionBox}>
             <p>What is the capital city of Australia?</p>
           </div>
-
           <div className={styles.answersGrid}>
             <button className={`${styles.answerBtn} ${styles.answerBtn_left}`}>
               A: Sydney
@@ -76,6 +83,17 @@ const GameQuestionContainer = () => {
             </button>
           </div>
         </main>
+
+        {showPopup && (
+          <div aria-hidden="true" className={styles.overlay}>
+            <div className={styles.centeredDiv}>
+              <p>Time's Up!</p>
+              <button onClick={handleRestart} className="button-1">
+                Restart game
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
