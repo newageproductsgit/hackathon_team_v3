@@ -3,11 +3,9 @@ import CreateRoom from "../components/CreateRoom";
 import JoinRoom from "../components/JoinRoom";
 import { useRouter } from "next/router";
 
+
 export default function Home({socket}) {
   const { asPath } = useRouter();
-  if (asPath == "homepage") {
-    body.style.background = "#4B0082";
-  }
   const [roomId, setRoomId] = useState("");
   const router = useRouter();
 
@@ -22,7 +20,7 @@ export default function Home({socket}) {
   return (
     <>
       <div>
-        <div class="container">
+        <div className="container">
           <div className="main-head">
             <img
               src="/assets/logo.png"
@@ -32,7 +30,7 @@ export default function Home({socket}) {
               Kaun Banega Crorepati
             </h1>
           </div>
-          <div class="info-box">
+          <div className="info-box">
             <p>Start Here</p>
             <div className="cta-container">
               <CreateRoom socket={socket} onRoomCreated={handleRoomCreated} />
@@ -43,7 +41,7 @@ export default function Home({socket}) {
             </div>
           </div>
 
-          <div class="image-container">
+          <div className="image-container">
             <img
               src="/assets/img2.webp"
               alt="KBC Host"
