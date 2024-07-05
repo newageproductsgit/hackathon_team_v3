@@ -3,6 +3,7 @@ import styles from "../../question.module.css";
 
 const GameQuestionContainer = () => {
   const [timeLeft, setTimeLeft] = useState(30);
+  const [showDisable,setShowDisable]=useState(false)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -11,6 +12,10 @@ const GameQuestionContainer = () => {
 
     return () => clearInterval(timer);
   }, []);
+
+  const handleDisable=()=>{
+    setShowDisable(true)
+  }
 
   return (
     <div className={styles.gameContainer}>
@@ -24,16 +29,29 @@ const GameQuestionContainer = () => {
           <div className={styles.questionBox}>
             <p>What is the capital city of Australia?</p>
           </div>
-
+          <div className="button-container">
           <div className={styles.answersGrid}>
-            <button className={styles.answerBtn}>A: Sydney</button>
-            <button className={styles.answerBtn}>B: Melbourne</button>
-            <button className={styles.answerBtn}>C: Canberra</button>
-            <button className={styles.answerBtn}>D: Perth</button>
+            {
+              !showDisable ?
+              <>
+              <button className={styles.answerBtn}>A: Sydney</button>
+              <button className={styles.answerBtn}>B: Melbourne</button>
+              <button className={styles.answerBtn}>C: Canberra</button>
+              <button className={styles.answerBtn}>D: Perth</button>
+              </>
+              :
+              <>
+              <button className={styles.answerBtn}>A: Sydney</button>
+              <button className={'disabled'} style={{backgroundColor:'grey',pointerEvents:'none'}}>B: Melbourne</button>
+              <button className={'disabled'} style={{backgroundColor:'grey',pointerEvents:'none'}}>C: Canberra disabled</button>
+              <button className={styles.answerBtn}>D: Perth</button>
+              </>
+            }
+           
           </div>
-
+          </div>
           <div className={styles.lifelines}>
-            <button className={styles.lifelineBtn}>50:50</button>
+            <button className={styles.lifelineBtn} onClick={handleDisable}>50:50</button>
             <button className={styles.lifelineBtn}>Phone a Friend</button>
             <button className={styles.lifelineBtn}>Ask the Audience</button>
           </div>
