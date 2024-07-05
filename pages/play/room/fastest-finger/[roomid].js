@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import styles from '../../question.module.css';
+import React, { useState, useEffect } from "react";
+import styles from "../../question.module.css";
 
 const QuestionContainer = () => {
   const [timeLeft, setTimeLeft] = useState(30);
@@ -17,28 +17,22 @@ const QuestionContainer = () => {
       <div className={styles.content}>
         <header>
           <h1 className={styles.title}>Who Wants to Be a Millionaire?</h1>
-          <div className={styles.prizeLevel}>$1,000,000</div>
+          <div className={styles.prizeLevel}>Fastest Finger First</div>
         </header>
-        
+
         <main>
           <div className={styles.questionBox}>
             <p>What is the capital city of Australia?</p>
           </div>
-          
+
           <div className={styles.answersGrid}>
             <button className={styles.answerBtn}>A: Sydney</button>
             <button className={styles.answerBtn}>B: Melbourne</button>
             <button className={styles.answerBtn}>C: Canberra</button>
             <button className={styles.answerBtn}>D: Perth</button>
           </div>
-          
-          <div className={styles.lifelines}>
-            <button className={styles.lifelineBtn}>50:50</button>
-            <button className={styles.lifelineBtn}>Phone a Friend</button>
-            <button className={styles.lifelineBtn}>Ask the Audience</button>
-          </div>
         </main>
-        
+
         <footer>
           <div className={styles.timer}>{timeLeft}</div>
         </footer>
