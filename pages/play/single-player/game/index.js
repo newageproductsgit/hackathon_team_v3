@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../question.module.css";
+import { useRouter } from "next/router";
 
 const GameQuestionContainer = () => {
   const [timeLeft, setTimeLeft] = useState(30);
   const [showPopup, setShowPopup] = useState(false);
   const [showDisable, setShowDisable] = useState(false);
-
+  const router = useRouter();
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prevTime) => {
@@ -23,9 +24,10 @@ const GameQuestionContainer = () => {
   const handleDisable = () => {
     setShowDisable(true);
   };
-const handleRestart = () => {
-    setShowPopup(false);
-    setTimeLeft(30);
+  const handleRestart = () => {
+    router.push("/");
+    // setShowPopup(false);
+    // setTimeLeft(30);
   };
   return (
     <div className={styles.gameContainer}>
@@ -87,9 +89,8 @@ const handleRestart = () => {
         {showPopup && (
           <div aria-hidden="true" className={styles.overlay}>
             <div className={styles.centeredDiv}>
-              <p>Time's Up!</p>
               <button onClick={handleRestart} className="button-1">
-                Restart game
+                Restart Game
               </button>
             </div>
           </div>

@@ -16,6 +16,9 @@ export default function Home({ socket }) {
   const handleRoomJoined = (joinedRoomId) => {
     router.push(`/room/${joinedRoomId}`);
   };
+  const handleClick = () => {
+    router.push(`/play/single-player/game`);
+  };
   return (
     <>
       <div>
@@ -43,7 +46,9 @@ export default function Home({ socket }) {
           <p>
             <b>OR</b>
           </p>
-          <button className="single_p_button">Play Singleplayer</button>
+          <button onClick={handleClick} className="single_p_button">
+            Play Singleplayer
+          </button>
           {/* <div className="image-container">
             <img
               src="/assets/img2.webp"
