@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from '../question.module.css';
+import styles from '../../question.module.css';
 
 const QuestionContainer = () => {
   const [timeLeft, setTimeLeft] = useState(30);
