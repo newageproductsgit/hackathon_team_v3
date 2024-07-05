@@ -14,34 +14,68 @@ const GameQuestionContainer = () => {
 
   return (
     <div className={styles.gameContainer}>
+      <div className={styles.timer}>Time left - {timeLeft} seconds</div>
+      <h1 className={styles.title}>Question 3/15</h1>
+      <div className={styles.prizeLevel}>Price won: $1,000,000</div>
       <div className={styles.content}>
-        <header>
-          <h1 className={styles.title}>Who Wants to Be a Millionaire?</h1>
-          <div className={styles.prizeLevel}>$1,000,000</div>
-        </header>
-
-        <main>
+        <main
+        // style={{
+        //   display: "flex",
+        //   flexDirection: "column",
+        //   justifyContent: "center",
+        //   alignItems: "center",
+        // }}
+        >
           <div className={styles.questionBox}>
             <p>What is the capital city of Australia?</p>
           </div>
 
           <div className={styles.answersGrid}>
-            <button className={styles.answerBtn}>A: Sydney</button>
-            <button className={styles.answerBtn}>B: Melbourne</button>
-            <button className={styles.answerBtn}>C: Canberra</button>
-            <button className={styles.answerBtn}>D: Perth</button>
+            <button className={`${styles.answerBtn} ${styles.answerBtn_left}`}>
+              A: Sydney
+            </button>
+            <button className={`${styles.answerBtn} ${styles.answerBtn_right}`}>
+              B: Melbourne
+            </button>
+            <button className={`${styles.answerBtn} ${styles.answerBtn_left}`}>
+              C: Canberra
+            </button>
+            <button className={`${styles.answerBtn} ${styles.answerBtn_right}`}>
+              D: Perth
+            </button>
           </div>
-
+          <div
+            style={{
+              textAlign: "center",
+              fontWeight: "bold",
+              fontSize: "1.5rem",
+              marginTop: "100px",
+              marginBottom: "50px",
+            }}
+          >
+            Got stuck? Use your life lines!
+          </div>
           <div className={styles.lifelines}>
-            <button className={styles.lifelineBtn}>50:50</button>
-            <button className={styles.lifelineBtn}>Phone a Friend</button>
-            <button className={styles.lifelineBtn}>Ask the Audience</button>
+            <button
+              className={styles.lifelineBtn}
+              data-hover-text="Removes two wrong answers"
+            >
+              50:50
+            </button>
+            <button
+              className={styles.lifelineBtn}
+              data-hover-text="Call a friend for help"
+            >
+              Phone a Friend
+            </button>
+            <button
+              className={styles.lifelineBtn}
+              data-hover-text="Ask the audience for help"
+            >
+              Ask the Audience
+            </button>
           </div>
         </main>
-
-        <footer>
-          <div className={styles.timer}>{timeLeft}</div>
-        </footer>
       </div>
     </div>
   );
