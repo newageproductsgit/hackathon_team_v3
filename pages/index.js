@@ -31,14 +31,17 @@ export default function Home({socket}) {
             </h1>
           </div>
           <div className="info-box">
-            <p>Start Here</p>
-            <div className="cta-container">
-              <CreateRoom socket={socket} onRoomCreated={handleRoomCreated} />
+            <p>Create Room</p>
+            <CreateRoom socket={socket} onRoomCreated={handleRoomCreated} />
               {roomId && <p>Room created! ID: {roomId}</p>}
-              <hr />
-              <h2>Join a Room</h2>
-              <JoinRoom socket={socket} onRoomJoined={handleRoomJoined} />
+            <div className="cta-container">
+              
+              {/* <hr /> */}
+              {/* <h2>Join a Room</h2> */}
+              
             </div>
+             <h2>Join a Room</h2>
+            <JoinRoom socket={socket} onRoomJoined={handleRoomJoined} />
           </div>
 
           <div className="image-container">

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import io from 'socket.io-client'
+import '../styles/globals.css';
+
 
 function MyApp({ Component, pageProps }) {
   const [socket, setSocket] = useState(null)
