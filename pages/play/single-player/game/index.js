@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "../../question.module.css";
 import { useRouter } from "next/router";
 
-const disabled={
-  minHeight: '50px',
-  color: '#ffffff',
-  padding: '10px 20px',
-  fontSize: '0.9em',
-  cursor: 'pointer',
-  border: '2px solid #ffd700',
-  position: 'relative',
-  textAlign: 'left',
-  borderRadius: '50px',
-  boxShadow: '0 0 10px #ffd700',
-  transition: 'all 0.3s ease',
-  color:'#000',
-  pointerEvent:'none',
-  backgroundColor:'#dbc4c4',
-  cursor:'defult'
+const disabled = {
+  minHeight: "50px",
+  color: "#ffffff",
+  padding: "10px 20px",
+  fontSize: "0.9em",
+  cursor: "pointer",
+  border: "2px solid #ffd700",
+  position: "relative",
+  textAlign: "left",
+  borderRadius: "50px",
+  boxShadow: "0 0 10px #ffd700",
+  transition: "all 0.3s ease",
+  color: "#000",
+  pointerEvent: "none",
+  backgroundColor: "#dbc4c4",
+  cursor: "defult",
 };
 
 const GameQuestionContainer = () => {
@@ -25,6 +25,8 @@ const GameQuestionContainer = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [showDisable, setShowDisable] = useState(false);
   const router = useRouter();
+  const audioRef = useRef(null);
+
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prevTime) => {
@@ -47,10 +49,35 @@ const GameQuestionContainer = () => {
     // setShowPopup(false);
     // setTimeLeft(30);
   };
+  useEffect(() => {
+    const playAudio = async () => {
+      if (audioRef.current) {
+        try {
+          await audioRef.current.play();
+          console.log("Audio playing");
+        } catch (err) {
+          console.error("Failed to play audio", err);
+        }
+      }
+    };
+    playAudio();
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
   return (
     <div className={styles.gameContainer}>
+      <audio
+        ref={audioRef}
+        src="/assets/kbc-awesome-5410.mp3"
+        controls
+        hidden
+      />
       <div className={styles.timer}>Time left - {timeLeft} seconds</div>
-      <h1 className={styles.title}>Question 3/15</h1>
+      <h1 className={styles.title}>Question 1/15</h1>
       <div className={styles.prizeLevel}>Price won: $1,000,000</div>
       <div className={styles.content}>
         <main>
@@ -58,22 +85,25 @@ const GameQuestionContainer = () => {
             <p>What is the capital city of Australia?</p>
           </div>
           <div className={styles.answersGrid}>
-          {
-              !showDisable ?
+            {!showDisable ? (
               <>
-              <button className={styles.answerBtn}>A: Sydney</button>
-              <button className={styles.answerBtn}>B: Melbourne</button>
-              <button className={styles.answerBtn}>C: Canberra</button>
-              <button className={styles.answerBtn}>D: Perth</button>
+                <button className={styles.answerBtn}>A: Sydney</button>
+                <button className={styles.answerBtn}>B: Melbourne</button>
+                <button className={styles.answerBtn}>C: Canberra</button>
+                <button className={styles.answerBtn}>D: Perth</button>
               </>
-              :
+            ) : (
               <>
-              <button className={styles.answerBtn}>A: Sydney</button>
-              <button className={'disabled'} style={disabled}>B: Melbourne</button>
-              <button className={'disabled'} style={disabled}>C: Canberra disabled</button>
-              <button className={styles.answerBtn}>D: Perth</button>
+                <button className={styles.answerBtn}>A: Sydney</button>
+                <button className={"disabled"} style={disabled}>
+                  B: Melbourne
+                </button>
+                <button className={"disabled"} style={disabled}>
+                  C: Canberra
+                </button>
+                <button className={styles.answerBtn}>D: Perth</button>
               </>
-            }
+            )}
           </div>
           <div
             style={{
