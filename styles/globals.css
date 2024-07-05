@@ -1,97 +1,117 @@
 body {
-    background-color: #4B0082; /* Deep purple background */
+    background-color: #4B0082;
+    /* Deep purple background */
     color: white;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
+
 .container {
+    display: flex;
+    flex-direction: column;
     width: 80%;
     margin: 0 auto;
+    justify-content: center;
+    align-items: center;
 }
+
 h1 {
     text-align: center;
     padding: 20px 0;
     margin: 0;
 }
-.create-btn{
+
+.create-btn {
     /* padding: 5px;
     border-radius: 5px;
     border-color: blanchedalmond;
     margin-left: 5px; */
 }
-.join{
+
+.join {
     margin-top: 10px;
-    
+
 }
-.create-input{
+
+.create-input {
+    border: none;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 15px;
 }
 
 
-.margin{
+.margin {
     margin-top: 10px !important;
 }
-.marginLeft{
+
+.marginLeft {
     margin-left: 10px !important;
 }
+
 .button-1 {
-    
-  background-color: #EA4C89;
-  border-radius: 8px;
-  border-style: none;
-  box-sizing: border-box;
-  color: #FFFFFF;
-  cursor: pointer;
-  display: inline-block;
-  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  height: 40px;
-  line-height: 20px;
-  list-style: none;
-  margin: 0;
-  outline: none;
-  padding: 10px 16px;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  transition: color 100ms;
-  vertical-align: baseline;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+
+    background-color: #EA4C89;
+    border-radius: 8px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    height: 40px;
+    line-height: 20px;
+    list-style: none;
+    margin: 0;
+    outline: none;
+    padding: 10px 16px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: color 100ms;
+    vertical-align: baseline;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
 }
 
 .button-1:hover,
 .button-1:focus {
-  background-color: #F082AC;
+    background-color: #F082AC;
 }
-.create-input + .create-input{
+
+.create-input+.create-input {
     /* padding: 10px; */
     margin-left: 10px;
 }
+
 .info-box {
-    background-color: #6A5ACD; /* Slightly lighter purple */
+    max-width: 500px;
+    background-color: #6a5acd5c;
+    /* Slightly lighter purple */
     padding: 10px;
     margin: 10px 0;
-    border-radius: 5px;
+    border-radius: 15px;
     text-align: center;
-    padding-bottom:40px;
+    padding-bottom: 40px;
+    box-shadow: 30px 18px 26px rgba(0, 0, 0, 0.2);
 }
-.info-box p{
-    font-size:25px;
-    text-transform: uppercase;
+
+.info-box p {
+    font-size: 25px;
     font-weight: 600;
 }
-.cta-container{
-    display:flex;
-    gap:20px;
+
+.cta-container {
+    display: flex;
+    gap: 20px;
     justify-content: center;
     align-items: center;
 }
-.info-box .cta-container button{
+
+.info-box .cta-container button {
     padding: 10px;
     border-radius: 4px;
     outline: none;
@@ -99,18 +119,42 @@ h1 {
     font-size: 16px;
     background: #d8b531;
 }
+
+.info-box .cta-container button {
+    padding: 10px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    font-size: 16px;
+    background: #d8b531;
+}
+
+.single_p_button {
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    background: #d8b531;
+    box-shadow: 30px 18px 26px rgba(0, 0, 0, 0.2);
+}
+
 .image-container {
-    background-color: #483D8B; /* Dark slate blue */
+    background-color: #483D8B;
+    /* Dark slate blue */
     border-radius: 15px;
     padding: 20px;
     display: flex;
     align-items: center;
     justify-content: space-around;
 }
-.main-head{
+
+.main-head {
     margin: 50px auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap:20px
+    gap: 20px
 }
