@@ -2,6 +2,24 @@ import React, { useState, useEffect } from "react";
 import styles from "../../question.module.css";
 import { useRouter } from "next/router";
 
+const disabled={
+  minHeight: '50px',
+  color: '#ffffff',
+  padding: '10px 20px',
+  fontSize: '0.9em',
+  cursor: 'pointer',
+  border: '2px solid #ffd700',
+  position: 'relative',
+  textAlign: 'left',
+  borderRadius: '50px',
+  boxShadow: '0 0 10px #ffd700',
+  transition: 'all 0.3s ease',
+  color:'#000',
+  pointerEvent:'none',
+  backgroundColor:'#dbc4c4',
+  cursor:'defult'
+};
+
 const GameQuestionContainer = () => {
   const [timeLeft, setTimeLeft] = useState(30);
   const [showPopup, setShowPopup] = useState(false);
@@ -40,18 +58,22 @@ const GameQuestionContainer = () => {
             <p>What is the capital city of Australia?</p>
           </div>
           <div className={styles.answersGrid}>
-            <button className={`${styles.answerBtn} ${styles.answerBtn_left}`}>
-              A: Sydney
-            </button>
-            <button className={`${styles.answerBtn} ${styles.answerBtn_right}`}>
-              B: Melbourne
-            </button>
-            <button className={`${styles.answerBtn} ${styles.answerBtn_left}`}>
-              C: Canberra
-            </button>
-            <button className={`${styles.answerBtn} ${styles.answerBtn_right}`}>
-              D: Perth
-            </button>
+          {
+              !showDisable ?
+              <>
+              <button className={styles.answerBtn}>A: Sydney</button>
+              <button className={styles.answerBtn}>B: Melbourne</button>
+              <button className={styles.answerBtn}>C: Canberra</button>
+              <button className={styles.answerBtn}>D: Perth</button>
+              </>
+              :
+              <>
+              <button className={styles.answerBtn}>A: Sydney</button>
+              <button className={'disabled'} style={disabled}>B: Melbourne</button>
+              <button className={'disabled'} style={disabled}>C: Canberra disabled</button>
+              <button className={styles.answerBtn}>D: Perth</button>
+              </>
+            }
           </div>
           <div
             style={{
@@ -68,6 +90,7 @@ const GameQuestionContainer = () => {
             <button
               className={styles.lifelineBtn}
               data-hover-text="Removes two wrong answers"
+              onClick={handleDisable}
             >
               50:50
             </button>
