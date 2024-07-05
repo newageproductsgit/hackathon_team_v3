@@ -4,6 +4,7 @@ import styles from "../../question.module.css";
 const GameQuestionContainer = () => {
   const [timeLeft, setTimeLeft] = useState(30);
   const [showPopup, setShowPopup] = useState(false);
+  const [showDisable,setShowDisable]=useState(false)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -18,11 +19,11 @@ const GameQuestionContainer = () => {
 
     return () => clearInterval(timer);
   }, []);
-  // const restartGame = () => {
-  //   setTimeLeft(30);
-  //   setShowPopup(false);
-  // };
-  console.log(showPopup, "dasda");
+
+  const handleDisable=()=>{
+    setShowDisable(true)
+  }
+
   return (
     <div className={styles.gameContainer}>
       <div className={styles.timer}>Time left - {timeLeft} seconds</div>
@@ -30,17 +31,10 @@ const GameQuestionContainer = () => {
       <div className={styles.prizeLevel}>Price won: $1,000,000</div>
       <div className={styles.content}>
         <main
-        // style={{
-        //   display: "flex",
-        //   flexDirection: "column",
-        //   justifyContent: "center",
-        //   alignItems: "center",
-        // }}
         >
           <div className={styles.questionBox}>
             <p>What is the capital city of Australia?</p>
           </div>
-
           <div className={styles.answersGrid}>
             <button className={`${styles.answerBtn} ${styles.answerBtn_left}`}>
               A: Sydney
