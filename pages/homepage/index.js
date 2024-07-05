@@ -1,13 +1,11 @@
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
+import React from 'react';
 
-export default function Home() {
-  const {asPath} = useRouter();
-  if(asPath=='homepage'){
-    body.style.background='#4B0082'
-  }
-  return (
-    <>
-    <div>
+
+function index(props) {
+   
+    return (
+        <div>
            <div class="container">
             <div className='main-head'>
             <img src='/assets/logo.png' style={{width:"80px",borderRadius:'60%'}}/>
@@ -26,6 +24,7 @@ export default function Home() {
         </div>
     </div>
         </div>
-    </>
-  )
+    );
 }
+
+export default index;
