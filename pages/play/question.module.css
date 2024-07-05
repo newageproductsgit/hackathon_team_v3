@@ -1,19 +1,22 @@
-
-
 .gameContainer {
-  background-color: #000000; /* Chroma key green background */
+  overflow: hidden;
+  background-color: #4B0082;
   color: #ffffff;
-  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.gameContainer * {
+  font-weight: bold;
 }
 
 .content {
   width: 80%;
   margin: 0 auto;
   padding: 20px;
-  background-color: rgba(0, 0, 0, 0.7);
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
@@ -21,13 +24,13 @@
 .title {
   font-size: 2em;
   color: #ffd700;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
   text-align: center;
   margin-bottom: 10px;
 }
 
 .prizeLevel {
   font-size: 1.2em;
+  font-weight: bold;
   color: #ffd700;
   font-weight: bold;
   text-align: center;
@@ -35,36 +38,65 @@
 }
 
 .questionBox {
-  background-color: #000080; /* Dark blue */
+  background-color: #000080;
+  /* Dark blue */
   border-radius: 50px;
   padding: 15px;
   margin-bottom: 15px;
   font-size: 1.1em;
   text-align: center;
   position: relative;
-  border: 2px solid #ffd700; /* Golden border */
-  box-shadow: 0 0 10px #ffd700; /* Subtle golden glow */
+  border: 2px solid #ffd700;
+  /* Golden border */
+  box-shadow: 0 0 10px #ffd700;
+  /* Subtle golden glow */
 }
 
-.questionBox::before,
 .questionBox::after {
-  content: '';
+  content: "";
   position: absolute;
-  width: 20px;
-  height: calc(100% + 4px); /* Account for border */
-  background-color: #000000; /* Chroma key green */
-  top: -2px; /* Adjust for border */
+  top: 50%;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background-color: #ffd700;
+  transform: translateY(-50%);
+}
+
+.answerBtn_left::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background-color: #ffd700;
+  transform: translateY(-50%);
+}
+
+.answerBtn_right::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 100%;
+  height: 2px;
+  background-color: #ffd700;
+  transform: translateY(-50%);
 }
 
 .questionBox::before {
-  left: -12px; /* Adjusted for border */
-  border-right: 2px solid #ffd700; /* Right border for left cut-out */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 100%;
+  height: 2px;
+  background-color: #ffd700;
+  transform: translateY(-50%);
 }
 
-.questionBox::after {
-  right: -12px; /* Adjusted for border */
-  border-left: 2px solid #ffd700; /* Left border for right cut-out */
-}
+
 
 .answersGrid {
   display: grid;
@@ -74,47 +106,48 @@
 }
 
 .answerBtn {
-  background-color: #000080; /* Dark blue */
+  background-color: #000080;
+  /* Dark blue */
+  min-height: 50px;
   color: #ffffff;
   padding: 10px 20px;
   font-size: 0.9em;
   cursor: pointer;
-  border: 2px solid #ffd700; /* Golden border */
+  border: 2px solid #ffd700;
+  /* Golden border */
   position: relative;
   text-align: left;
   border-radius: 50px;
-  box-shadow: 0 0 10px #ffd700; /* Subtle golden glow */
+  box-shadow: 0 0 10px #ffd700;
+  /* Subtle golden glow */
   transition: all 0.3s ease;
 }
 
-.answerBtn::before,
-.answerBtn::after {
-  content: '';
-  position: absolute;
-  width: 15px;
-  height: calc(100% + 4px); /* Account for border */
-  background-color: #000000; /* Chroma key green */
-  top: -2px; /* Adjust for border */
-}
-
 .answerBtn::before {
-  left: -9px; /* Adjusted for border */
-  border-right: 2px solid #ffd700; /* Right border for left cut-out */
+  left: -9px;
+  /* Adjusted for border */
+  border-right: 2px solid #ffd700;
+  /* Right border for left cut-out */
 }
 
 .answerBtn::after {
-  right: -9px; /* Adjusted for border */
-  border-left: 2px solid #ffd700; /* Left border for right cut-out */
+  right: -9px;
+  /* Adjusted for border */
+  border-left: 2px solid #ffd700;
+  /* Left border for right cut-out */
 }
 
 .answerBtn:hover {
-  background-color: #0000a0; /* Slightly lighter blue on hover */
-  box-shadow: 0 0 15px #ffd700; /* Enhanced glow on hover */
+  background-color: #0000a0;
+  /* Slightly lighter blue on hover */
+  box-shadow: 0 0 15px #ffd700;
+  /* Enhanced glow on hover */
 }
 
 .lifelines {
   display: flex;
-  justify-content: space-around;
+  gap: 10px;
+  justify-content: center;
   margin-bottom: 15px;
 }
 
@@ -123,7 +156,8 @@
   border: 2px solid #ffd700;
   color: #ffffff;
   padding: 8px 12px;
-  font-size: 0.8em;
+  min-width: 200px;
+  font-size: 1em;
   cursor: pointer;
   border-radius: 25px;
   box-shadow: 0 0 5px #ffd700;
@@ -135,12 +169,36 @@
   box-shadow: 0 0 10px #ffd700;
 }
 
+.lifelineBtn::after {
+  content: attr(data-hover-text);
+  /* padding-top: 10px; */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 10%;
+  background-color: #ffd700;
+  color: #000000;
+  padding: 5px;
+  border-radius: 5px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.lifelineBtn:hover::after {
+  opacity: 1;
+}
+
 .timer {
-  font-size: 1.5em;
+  font-size: 2.5em;
   font-weight: bold;
-  color: #ff0000;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  color: white;
+  text-shadow: 32px 12px 41px rgba(0, 0, 0, 0.5);
   text-align: center;
+  position: absolute;
+  top: 2%;
+  right: 1%;
 }
 .overlay {
   display: flex;
@@ -163,4 +221,5 @@
   padding: 20px;
   max-width: 200px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ 
 }
