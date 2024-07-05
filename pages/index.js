@@ -3,7 +3,7 @@ import CreateRoom from "../components/CreateRoom";
 import JoinRoom from "../components/JoinRoom";
 import { useRouter } from "next/router";
 
-export default function Home() {
+export default function Home({socket}) {
   const { asPath } = useRouter();
   if (asPath == "homepage") {
     body.style.background = "#4B0082";
