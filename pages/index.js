@@ -7,7 +7,6 @@ export default function Home({ socket }) {
   const { asPath } = useRouter();
   const [roomId, setRoomId] = useState("");
   const router = useRouter();
-
   const handleRoomCreated = (newRoomId) => {
     setRoomId(newRoomId);
     router.push(`/room/${newRoomId}`);
@@ -19,17 +18,19 @@ export default function Home({ socket }) {
   const handleClick = () => {
     router.push(`/play/single-player/game`);
   };
+
   return (
     <>
       <div>
         <div className="container">
           <div className="main-head">
+          
             <img
               src="/assets/logo.png"
               style={{ width: "80px", borderRadius: "60%" }}
             />
             <h1 style={{ textTransform: "uppercase" }}>
-              Kaun Banega Crorepati
+              Kaun Banega Crorepati 💸🤑
             </h1>
           </div>
           <div className="info-box">
