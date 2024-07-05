@@ -3,15 +3,26 @@ import styles from "../../question.module.css";
 
 const GameQuestionContainer = () => {
   const [timeLeft, setTimeLeft] = useState(30);
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+          // clearInterval(timer);
+          setShowPopup(true);
+        }
+        return prevTime > 0 ? prevTime - 1 : 0;
+      });
     }, 1000);
 
     return () => clearInterval(timer);
   }, []);
-
+  // const restartGame = () => {
+  //   setTimeLeft(30);
+  //   setShowPopup(false);
+  // };
+  console.log(showPopup, "dasda");
   return (
     <div className={styles.gameContainer}>
       <div className={styles.content}>
@@ -42,6 +53,15 @@ const GameQuestionContainer = () => {
         <footer>
           <div className={styles.timer}>{timeLeft}</div>
         </footer>
+        {/* <button onClick={() => setShowPopup(true)}>showmodal</button> */}
+        {showPopup && (
+          <div aria-hidden="true" className={styles.overlay}>
+            <div className={styles.centeredDiv}>
+              <p>Time's   Up!</p>
+              <button className="button-1">Restart game</button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
