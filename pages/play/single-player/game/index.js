@@ -113,6 +113,7 @@ const GameQuestionContainer = ({ questions }) => {
   const handleOptionClick = (selectedAnswer) => {
     if (selectedAnswer === answer) {
       setTimeout(() => {
+        setFiftyFiftyDisabledIndices([]);
         setTimeLeft(60);
         setGameLevel((prevLevel) => prevLevel + 1);
         setGamePrize((prevPrize) => {
@@ -306,7 +307,9 @@ const GameQuestionContainer = ({ questions }) => {
 export default GameQuestionContainer;
 
 export async function getStaticProps() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://hackathon-team-v3-3xcv.vercel.app';
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL ||
+    "https://hackathon-team-v3-3xcv.vercel.app";
   const res = await fetch(`${baseUrl}/questions/list.json`); // Adjust the URL as necessary
   const questions = await res.json();
   return {
