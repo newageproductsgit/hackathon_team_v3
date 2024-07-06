@@ -1,0 +1,144 @@
+[
+  {
+    "easy": [
+      {
+        "question_id": 1,
+        "question": "What is the capital of France?",
+        "options": ["Berlin", "Madrid", "Paris", "Rome"],
+        "answer": "Paris",
+        "answer_index": 2
+      },
+      {
+        "question_id": 2,
+        "question": "Which planet is known as the Red Planet?",
+        "options": ["Earth", "Mars", "Jupiter", "Saturn"],
+        "answer": "Mars",
+        "answer_index": 1
+      },
+      {
+        "question_id": 3,
+        "question": "What is the largest ocean on Earth?",
+        "options": [
+          "Atlantic Ocean",
+          "Indian Ocean",
+          "Arctic Ocean",
+          "Pacific Ocean"
+        ],
+        "answer": "Pacific Ocean",
+        "answer_index": 3
+      },
+      {
+        "question_id": 4,
+        "question": "Who wrote the play 'Romeo and Juliet'?",
+        "options": [
+          "William Shakespeare",
+          "Charles Dickens",
+          "J.K. Rowling",
+          "Mark Twain"
+        ],
+        "answer": "William Shakespeare",
+        "answer_index": 0
+      },
+      {
+        "question_id": 5,
+        "question": "What is the chemical symbol for gold?",
+        "options": ["Ag", "Au", "Pb", "Pt"],
+        "answer": "Au",
+        "answer_index": 1
+      }
+    ]
+  },
+  {
+    "medium": [
+      {
+        "question_id": 6,
+        "question": "In which year did the Titanic sink?",
+        "options": ["1910", "1912", "1914", "1916"],
+        "answer": "1912",
+        "answer_index": 1
+      },
+      {
+        "question_id": 7,
+        "question": "Which element has the chemical symbol 'Fe'?",
+        "options": ["Iron", "Fluorine", "Francium", "Fermium"],
+        "answer": "Iron",
+        "answer_index": 0
+      },
+      {
+        "question_id": 8,
+        "question": "What is the longest river in the world?",
+        "options": [
+          "Amazon River",
+          "Nile River",
+          "Yangtze River",
+          "Mississippi River"
+        ],
+        "answer": "Nile River",
+        "answer_index": 1
+      },
+      {
+        "question_id": 9,
+        "question": "Which planet in our solar system has the most moons?",
+        "options": ["Mars", "Jupiter", "Saturn", "Uranus"],
+        "answer": "Saturn",
+        "answer_index": 2
+      },
+      {
+        "question_id": 10,
+        "question": "What is the hardest natural substance on Earth?",
+        "options": ["Gold", "Iron", "Diamond", "Platinum"],
+        "answer": "Diamond",
+        "answer_index": 2
+      }
+    ]
+  },
+  {
+    "hard": [
+      {
+        "question_id": 11,
+        "question": "Which scientist is credited with the discovery of penicillin?",
+        "options": [
+          "Marie Curie",
+          "Alexander Fleming",
+          "Louis Pasteur",
+          "Gregor Mendel"
+        ],
+        "answer": "Alexander Fleming",
+        "answer_index": 1
+      },
+      {
+        "question_id": 12,
+        "question": "What is the capital of Mongolia?",
+        "options": ["Ulaanbaatar", "Astana", "Tashkent", "Bishkek"],
+        "answer": "Ulaanbaatar",
+        "answer_index": 0
+      },
+      {
+        "question_id": 13,
+        "question": "Which element is the primary component of the sun?",
+        "options": ["Helium", "Hydrogen", "Carbon", "Oxygen"],
+        "answer": "Hydrogen",
+        "answer_index": 1
+      },
+      {
+        "question_id": 14,
+        "question": "Who wrote the novel 'Moby-Dick'?",
+        "options": [
+          "Mark Twain",
+          "Herman Melville",
+          "Ernest Hemingway",
+          "F. Scott Fitzgerald"
+        ],
+        "answer": "Herman Melville",
+        "answer_index": 1
+      },
+      {
+        "question_id": 15,
+        "question": "In what year did the Berlin Wall fall?",
+        "options": ["1987", "1988", "1989", "1990"],
+        "answer": "1989",
+        "answer_index": 2
+      }
+    ]
+  }
+]

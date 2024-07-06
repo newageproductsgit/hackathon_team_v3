@@ -1,5 +1,6 @@
 .gameContainer {
   overflow: hidden;
+  position: relative;
   background-color: #4B0082;
   color: #ffffff;
   display: flex;
@@ -7,10 +8,17 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  z-index: 1;
 }
 
 .gameContainer * {
   font-weight: bold;
+}
+
+.blur {
+  filter: blur(5px);
+  pointer-events: none;
+  /* Disable interactions with blurred content */
 }
 
 .content {
@@ -200,26 +208,45 @@
   top: 2%;
   right: 1%;
 }
+
 .overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  font-size: 1rem;
-  font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.4);
-  inset: 0px;
-  position: absolute;
+  z-index: 1000; /* Make sure it's on top */
 }
 
 .centeredDiv {
-  background: white;
-  border: 2px #eee;
+  z-index: 1001;
+  display: flex;
+  position: fixed;
+  justify-self: center;
+  align-items: center;
+  flex-direction: column;
+  background: #000080;
+  border: 2px solid gold;
   border-radius: 8px;
-  padding: 50px;
-  max-width: 200px;
+  padding: 0 50px 50px;
+  max-width: 250px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
- 
+}
+
+.modalHeader p {
+  text-align: center;
+}
+
+.modalHeader .p1 {
+  font-size: 2.0rem;
+  color: gold
+}
+
+.modalHeader .p2 {
+  font-size: 1.0rem;
+  color: white
 }
