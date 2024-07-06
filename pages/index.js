@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CreateRoom from "../components/CreateRoom";
 import JoinRoom from "../components/JoinRoom";
 import { useRouter } from "next/router";
@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 export default function Home({ socket }) {
   const { asPath } = useRouter();
   const [roomId, setRoomId] = useState("");
+  const audioRef = useRef(null);
   const router = useRouter();
   const handleRoomCreated = (newRoomId) => {
     setRoomId(newRoomId);
@@ -18,13 +19,35 @@ export default function Home({ socket }) {
   const handleClick = () => {
     router.push(`/play/single-player/game`);
   };
-
+  useEffect(() => {
+    const playAudio = async () => {
+      if (audioRef.current) {
+        try {
+          await audioRef.current.play();
+          console.log("Audio playing");
+        } catch (err) {
+          console.error("Failed to play audio", err);
+        }
+      }
+    };
+    playAudio();
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
   return (
     <>
       <div>
+        <audio
+          ref={audioRef}
+          src="/assets/kbc-awesome-5410.mp3"
+          controls
+          hidden
+        />
         <div className="container">
           <div className="main-head">
-          
             <img
               src="/assets/logo.png"
               style={{ width: "80px", borderRadius: "60%" }}
@@ -50,13 +73,6 @@ export default function Home({ socket }) {
           <button onClick={handleClick} className="single_p_button">
             Play Singleplayer
           </button>
-          {/* <div className="image-container">
-            <img
-              src="/assets/img2.webp"
-              alt="KBC Host"
-              style={{ width: "500px" }}
-            />
-          </div> */}
         </div>
       </div>
     </>
