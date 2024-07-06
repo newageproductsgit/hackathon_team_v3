@@ -45,27 +45,117 @@
         "options": ["Ag", "Au", "Pb", "Pt"],
         "answer": "Au",
         "answer_index": 1
+      },
+      {
+        "question_id": 6,
+        "question": "Which country is famous for its tulips?",
+        "options": ["Netherlands", "Belgium", "France", "Germany"],
+        "answer": "Netherlands",
+        "answer_index": 0
+      },
+      {
+        "question_id": 7,
+        "question": "Who painted the Mona Lisa?",
+        "options": [
+          "Leonardo da Vinci",
+          "Vincent van Gogh",
+          "Pablo Picasso",
+          "Michelangelo"
+        ],
+        "answer": "Leonardo da Vinci",
+        "answer_index": 0
+      },
+      {
+        "question_id": 8,
+        "question": "What is the largest planet in our solar system?",
+        "options": ["Earth", "Mars", "Jupiter", "Saturn"],
+        "answer": "Jupiter",
+        "answer_index": 2
+      },
+      {
+        "question_id": 9,
+        "question": "What is the smallest country in the world?",
+        "options": ["Monaco", "Vatican City", "San Marino", "Liechtenstein"],
+        "answer": "Vatican City",
+        "answer_index": 1
+      },
+      {
+        "question_id": 10,
+        "question": "Which famous physicist developed the theory of relativity?",
+        "options": [
+          "Isaac Newton",
+          "Albert Einstein",
+          "Stephen Hawking",
+          "Niels Bohr"
+        ],
+        "answer": "Albert Einstein",
+        "answer_index": 1
+      },
+      {
+        "question_id": 11,
+        "question": "Which animal is known as the 'ship of the desert'?",
+        "options": ["Camel", "Elephant", "Horse", "Giraffe"],
+        "answer": "Camel",
+        "answer_index": 0
+      },
+      {
+        "question_id": 12,
+        "question": "Who invented the telephone?",
+        "options": [
+          "Alexander Graham Bell",
+          "Thomas Edison",
+          "Nikola Tesla",
+          "Guglielmo Marconi"
+        ],
+        "answer": "Alexander Graham Bell",
+        "answer_index": 0
+      },
+      {
+        "question_id": 13,
+        "question": "Which planet is known as the 'Morning Star' or 'Evening Star'?",
+        "options": ["Mars", "Jupiter", "Venus", "Mercury"],
+        "answer": "Venus",
+        "answer_index": 2
+      },
+      {
+        "question_id": 14,
+        "question": "What is the capital city of Japan?",
+        "options": ["Shanghai", "Seoul", "Tokyo", "Osaka"],
+        "answer": "Tokyo",
+        "answer_index": 2
+      },
+      {
+        "question_id": 15,
+        "question": "Who is known as the 'Father of Computers'?",
+        "options": [
+          "Charles Babbage",
+          "Alan Turing",
+          "Ada Lovelace",
+          "John von Neumann"
+        ],
+        "answer": "Charles Babbage",
+        "answer_index": 0
       }
     ]
   },
   {
     "medium": [
       {
-        "question_id": 6,
+        "question_id": 1,
         "question": "In which year did the Titanic sink?",
         "options": ["1910", "1912", "1914", "1916"],
         "answer": "1912",
         "answer_index": 1
       },
       {
-        "question_id": 7,
+        "question_id": 2,
         "question": "Which element has the chemical symbol 'Fe'?",
         "options": ["Iron", "Fluorine", "Francium", "Fermium"],
         "answer": "Iron",
         "answer_index": 0
       },
       {
-        "question_id": 8,
+        "question_id": 3,
         "question": "What is the longest river in the world?",
         "options": [
           "Amazon River",
@@ -77,23 +167,223 @@
         "answer_index": 1
       },
       {
-        "question_id": 9,
+        "question_id": 4,
         "question": "Which planet in our solar system has the most moons?",
         "options": ["Mars", "Jupiter", "Saturn", "Uranus"],
         "answer": "Saturn",
         "answer_index": 2
       },
       {
-        "question_id": 10,
+        "question_id": 5,
         "question": "What is the hardest natural substance on Earth?",
         "options": ["Gold", "Iron", "Diamond", "Platinum"],
         "answer": "Diamond",
         "answer_index": 2
+      },
+      {
+        "question_id": 6,
+        "question": "Which year did the Titanic sink?",
+        "options": ["1912", "1914", "1916", "1918"],
+        "answer": "1912",
+        "answer_index": 0
+      },
+      {
+        "question_id": 7,
+        "question": "Who painted the 'Starry Night'?",
+        "options": [
+          "Pablo Picasso",
+          "Vincent van Gogh",
+          "Claude Monet",
+          "Salvador Dalí"
+        ],
+        "answer": "Vincent van Gogh",
+        "answer_index": 1
+      },
+      {
+        "question_id": 8,
+        "question": "Which mammal can fly?",
+        "options": ["Bat", "Squirrel", "Kangaroo", "Dolphin"],
+        "answer": "Bat",
+        "answer_index": 0
+      },
+      {
+        "question_id": 9,
+        "question": "What is the currency of Brazil?",
+        "options": ["Peso", "Real", "Dollar", "Euro"],
+        "answer": "Real",
+        "answer_index": 1
+      },
+      {
+        "question_id": 10,
+        "question": "Who wrote 'The Great Gatsby'?",
+        "options": [
+          "F. Scott Fitzgerald",
+          "Ernest Hemingway",
+          "Mark Twain",
+          "Jane Austen"
+        ],
+        "answer": "F. Scott Fitzgerald",
+        "answer_index": 0
+      },
+      {
+        "question_id": 11,
+        "question": "What is the tallest mountain in the world?",
+        "options": [
+          "Mount Everest",
+          "Mount Kilimanjaro",
+          "Mount McKinley",
+          "Mount Fuji"
+        ],
+        "answer": "Mount Everest",
+        "answer_index": 0
+      },
+      {
+        "question_id": 12,
+        "question": "Who discovered penicillin?",
+        "options": [
+          "Alexander Fleming",
+          "Louis Pasteur",
+          "Robert Koch",
+          "Marie Curie"
+        ],
+        "answer": "Alexander Fleming",
+        "answer_index": 0
+      },
+      {
+        "question_id": 13,
+        "question": "Which city hosted the 2016 Summer Olympics?",
+        "options": ["Tokyo", "Rio de Janeiro", "London", "Beijing"],
+        "answer": "Rio de Janeiro",
+        "answer_index": 1
+      },
+      {
+        "question_id": 14,
+        "question": "Which novel by Harper Lee won the Pulitzer Prize?",
+        "options": [
+          "To Kill a Mockingbird",
+          "The Great Gatsby",
+          "1984",
+          "Brave New World"
+        ],
+        "answer": "To Kill a Mockingbird",
+        "answer_index": 0
+      },
+      {
+        "question_id": 15,
+        "question": "Who was the first woman to fly solo across the Atlantic Ocean?",
+        "options": [
+          "Amelia Earhart",
+          "Bessie Coleman",
+          "Harriet Quimby",
+          "Jacqueline Cochran"
+        ],
+        "answer": "Amelia Earhart",
+        "answer_index": 0
       }
     ]
   },
   {
     "hard": [
+      {
+        "question_id": 1,
+        "question": "Which continent is the largest by land area?",
+        "options": ["Africa", "Asia", "North America", "Antarctica"],
+        "answer": "Asia",
+        "answer_index": 1
+      },
+      {
+        "question_id": 2,
+        "question": "Which country is known as the Land of the Rising Sun?",
+        "options": ["China", "South Korea", "Japan", "Vietnam"],
+        "answer": "Japan",
+        "answer_index": 2
+      },
+      {
+        "question_id": 3,
+        "question": "Who painted the Mona Lisa?",
+        "options": [
+          "Leonardo da Vinci",
+          "Michelangelo",
+          "Raphael",
+          "Donatello"
+        ],
+        "answer": "Leonardo da Vinci",
+        "answer_index": 0
+      },
+      {
+        "question_id": 4,
+        "question": "Who is credited with inventing the World Wide Web?",
+        "options": [
+          "Bill Gates",
+          "Tim Berners-Lee",
+          "Steve Jobs",
+          "Larry Page"
+        ],
+        "answer": "Tim Berners-Lee",
+        "answer_index": 1
+      },
+      {
+        "question_id": 5,
+        "question": "What is the longest river in the world?",
+        "options": [
+          "Amazon River",
+          "Nile River",
+          "Yangtze River",
+          "Mississippi River"
+        ],
+        "answer": "Amazon River",
+        "answer_index": 0
+      },
+      {
+        "question_id": 6,
+        "question": "Who was the first person to step on the moon?",
+        "options": [
+          "Buzz Aldrin",
+          "Neil Armstrong",
+          "Michael Collins",
+          "Yuri Gagarin"
+        ],
+        "answer": "Neil Armstrong",
+        "answer_index": 1
+      },
+      {
+        "question_id": 7,
+        "question": "Which composer wrote 'Symphony No. 9'?",
+        "options": [
+          "Ludwig van Beethoven",
+          "Wolfgang Amadeus Mozart",
+          "Johann Sebastian Bach",
+          "Antonín Dvořák"
+        ],
+        "answer": "Ludwig van Beethoven",
+        "answer_index": 0
+      },
+      {
+        "question_id": 8,
+        "question": "Which city hosted the 2012 Summer Olympics?",
+        "options": ["London", "Sydney", "Athens", "Rio de Janeiro"],
+        "answer": "London",
+        "answer_index": 0
+      },
+      {
+        "question_id": 9,
+        "question": "What is the smallest bone in the human body?",
+        "options": ["Stapes", "Incus", "Malleus", "Femur"],
+        "answer": "Stapes",
+        "answer_index": 0
+      },
+      {
+        "question_id": 10,
+        "question": "Who developed the theory of relativity?",
+        "options": [
+          "Isaac Newton",
+          "Albert Einstein",
+          "Stephen Hawking",
+          "Niels Bohr"
+        ],
+        "answer": "Albert Einstein",
+        "answer_index": 1
+      },
       {
         "question_id": 11,
         "question": "Which scientist is credited with the discovery of penicillin?",
