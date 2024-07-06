@@ -6,16 +6,19 @@ const GameQuestionContainer = ({ questions }) => {
   const [timeLeft, setTimeLeft] = useState(60);
   const [disableTimer, setDisableTimer] = useState(false);
   const [showRestartPopup, setshowRestartPopup] = useState(false);
-  const [showDisable, setShowDisable] = useState(false);
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState([]);
   const [answer, setAnswer] = useState("");
+  const [current_question_data, setCurrentQuestionData] = useState(null);
   const [gameLevel, setGameLevel] = useState(1);
   const [gamePrize, setGamePrize] = useState(0);
   const [questionsAsked, setQuestionsAsked] = useState([]);
 
   const [flip_q_used, setFlipQuestionUsed] = useState(false);
   const [fifty_fifty_used, setFiftyFiftyUsed] = useState(false);
+  const [fifty_fifty_disabled_indices, setFiftyFiftyDisabledIndices] = useState(
+    []
+  );
   const [aud_poll_used, setAudiencePollUsed] = useState(false);
 
   const easyQuestions = questions[0]?.easy || [];
@@ -41,8 +44,21 @@ const GameQuestionContainer = ({ questions }) => {
   useEffect(() => {
     fetchRandomQuestion(1);
   }, []);
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      const message = "Are you sure you want to leave?";
+      event.preventDefault();
+      event.returnValue = message; // For most modern browsers
+      return message; // For some older browsers
+    };
 
-  const fetchRandomQuestion = (gameLevel) => {
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+  const fetchRandomQuestion = (gameLevel, flipQuestion = false) => {
     let questionSet;
     let previous_questions = questionsAsked;
     if (gameLevel <= 5) {
@@ -54,13 +70,14 @@ const GameQuestionContainer = ({ questions }) => {
     }
 
     if (
-      gameLevel == 1 ||
+      (gameLevel == 1 && !flipQuestion) ||
       gameLevel == 6 ||
       gameLevel == 11 ||
       gameLevel == 15
     ) {
       previous_questions = [];
     }
+    console.log(gameLevel, previous_questions);
     let randomIndex;
     do {
       randomIndex = Math.floor(Math.random() * questionSet.length);
@@ -68,6 +85,7 @@ const GameQuestionContainer = ({ questions }) => {
 
     const newQuestion = questionSet[randomIndex];
     if (newQuestion) {
+      setCurrentQuestionData(newQuestion);
       setQuestion(newQuestion.question);
       setOptions(newQuestion.options);
       setAnswer(newQuestion.answer);
@@ -76,11 +94,16 @@ const GameQuestionContainer = ({ questions }) => {
       console.error("No valid question found at random index.");
     }
   };
-
+  async function resetLifelines() {
+    setFiftyFiftyUsed(false);
+    setFiftyFiftyDisabledIndices([]);
+    setAudiencePollUsed(false);
+    setFlipQuestionUsed(false);
+  }
   const handleRestart = () => {
     setTimeLeft(60);
+    resetLifelines();
     setshowRestartPopup(false);
-    setShowDisable(false);
     setGameLevel(1);
     setGamePrize(0);
     setQuestionsAsked([]);
@@ -144,20 +167,26 @@ const GameQuestionContainer = ({ questions }) => {
       setshowRestartPopup(true);
     }
   };
-  useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      const message = "Are you sure you want to leave?";
-      event.preventDefault();
-      event.returnValue = message; // For most modern browsers
-      return message; // For some older browsers
-    };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
+  async function executeFiftyFiftyLifeline() {
+    let answer_index = current_question_data.answer_index;
+    console.log("answer index", answer_index);
+    if (answer_index != undefined) {
+      let disabled_options = [];
+      let randomIndex;
+      do {
+        randomIndex = Math.floor(Math.random() * 4);
+        if (
+          randomIndex != answer_index &&
+          !disabled_options.includes(randomIndex)
+        ) {
+          disabled_options.push(randomIndex);
+        }
+      } while (disabled_options.length < 2);
+      console.log(answer_index, disabled_options);
+      setFiftyFiftyDisabledIndices(disabled_options);
+    }
+  }
   return (
     <>
       <div
@@ -187,9 +216,12 @@ const GameQuestionContainer = ({ questions }) => {
                     index % 2 === 0
                       ? styles.answerBtn_left
                       : styles.answerBtn_right
+                  } ${
+                    fifty_fifty_disabled_indices.includes(index)
+                      ? styles.disabled_option
+                      : ""
                   }`}
                   onClick={() => handleOptionClick(option)}
-                  disabled={showDisable}
                 >
                   {option_names[index]}
                   {option}
@@ -209,10 +241,14 @@ const GameQuestionContainer = ({ questions }) => {
             </div>
             <div className={styles.lifelines}>
               <button
-                className={styles.lifelineBtn}
+                className={`${styles.lifelineBtn} ${
+                  fifty_fifty_used ? styles.disabledLifeline : ""
+                }`}
                 data-hover-text="Removes two wrong answers"
-                onClick={() => setShowDisable(true)}
-                disabled={showDisable}
+                onClick={() => {
+                  executeFiftyFiftyLifeline();
+                  setFiftyFiftyUsed(true);
+                }}
               >
                 50:50
               </button>
@@ -222,7 +258,7 @@ const GameQuestionContainer = ({ questions }) => {
                 }`}
                 data-hover-text="Answer another question"
                 onClick={() => {
-                  fetchRandomQuestion(gameLevel);
+                  fetchRandomQuestion(gameLevel, true);
                   setFlipQuestionUsed(true);
                 }}
               >

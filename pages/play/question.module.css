@@ -175,6 +175,11 @@
   /* Enhanced glow on hover */
 }
 
+.disabled_option {
+  background-color: #39395a;
+  pointer-events: none;
+}
+
 .lifelines {
   display: flex;
   gap: 10px;
