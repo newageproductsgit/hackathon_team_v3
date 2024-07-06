@@ -49,7 +49,7 @@ export default function Home({ socket }) {
           hidden
         />
         <div className="container">
-          <div className="main-head">
+          <div className="main-head glassContainer">
             <img
               src="/assets/logo.png"
               style={{ width: "80px", borderRadius: "60%" }}
@@ -58,7 +58,7 @@ export default function Home({ socket }) {
               Kaun Banega Crorepati 💸🤑
             </h1>
           </div>
-          <div className="info-box">
+          <div className="info-box glassContainer">
             <p>Create Room</p>
             <CreateRoom socket={socket} onRoomCreated={handleRoomCreated} />
             {roomId && <p>Room created! ID: {roomId}</p>}
@@ -73,7 +73,7 @@ export default function Home({ socket }) {
             <b>OR</b>
           </p>
           <button onClick={handleClick} className="single_p_button">
-            Play Singleplayer
+            PLAY SINGLEPLAYER
           </button>
         </div>
       </div>

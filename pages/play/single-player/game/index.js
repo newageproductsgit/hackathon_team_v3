@@ -25,6 +25,7 @@ const GameQuestionContainer = ({ questions }) => {
   const mediumQuestions = questions[1]?.medium || [];
   const hardQuestions = questions[2]?.hard || [];
 
+  const router = useRouter();
   useEffect(() => {
     if (!disableTimer) {
       const timer = setInterval(() => {
@@ -101,13 +102,14 @@ const GameQuestionContainer = ({ questions }) => {
     setFlipQuestionUsed(false);
   }
   const handleRestart = () => {
-    setTimeLeft(60);
-    resetLifelines();
-    setshowRestartPopup(false);
-    setGameLevel(1);
-    setGamePrize(0);
-    setQuestionsAsked([]);
-    fetchRandomQuestion(1);
+    // setTimeLeft(60);
+    // resetLifelines();
+    // setshowRestartPopup(false);
+    // setGameLevel(1);
+    // setGamePrize(0);
+    // setQuestionsAsked([]);
+    // fetchRandomQuestion(1);
+    router.replace('/');
   };
 
   const handleOptionClick = (selectedAnswer) => {
@@ -261,6 +263,7 @@ const GameQuestionContainer = ({ questions }) => {
                 onClick={() => {
                   fetchRandomQuestion(gameLevel, true);
                   setFlipQuestionUsed(true);
+                  setFiftyFiftyDisabledIndices([]);
                 }}
               >
                 Flip the question

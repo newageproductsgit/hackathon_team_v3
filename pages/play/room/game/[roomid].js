@@ -101,13 +101,14 @@ const GameQuestionContainer = ({ questions }) => {
     setFlipQuestionUsed(false);
   }
   const handleRestart = () => {
-    setTimeLeft(60);
-    resetLifelines();
-    setshowRestartPopup(false);
-    setGameLevel(1);
-    setGamePrize(0);
-    setQuestionsAsked([]);
-    fetchRandomQuestion(1);
+    // setTimeLeft(60);
+    // resetLifelines();
+    // setshowRestartPopup(false);
+    // setGameLevel(1);
+    // setGamePrize(0);
+    // setQuestionsAsked([]);
+    // fetchRandomQuestion(1);
+    window.location.href('/')
   };
 
   const handleOptionClick = (selectedAnswer) => {
@@ -261,6 +262,7 @@ const GameQuestionContainer = ({ questions }) => {
                 onClick={() => {
                   fetchRandomQuestion(gameLevel, true);
                   setFlipQuestionUsed(true);
+                  setFiftyFiftyDisabledIndices([])
                 }}
               >
                 Flip the question
