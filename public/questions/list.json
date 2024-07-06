@@ -182,10 +182,10 @@
       },
       {
         "question_id": 6,
-        "question": "Which year did the Titanic sink?",
-        "options": ["1912", "1914", "1916", "1918"],
-        "answer": "1912",
-        "answer_index": 0
+        "question": "Which year did the sputnik 1 got launched?",
+        "options": ["1912", "1957", "1916", "1918"],
+        "answer": "1957",
+        "answer_index": 1
       },
       {
         "question_id": 7,
