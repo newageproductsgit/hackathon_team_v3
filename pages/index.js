@@ -24,6 +24,7 @@ export default function Home({ socket }) {
       if (audioRef.current) {
         try {
           await audioRef.current.play();
+          audioRef.current.volume = "0.2";
           console.log("Audio playing");
         } catch (err) {
           console.error("Failed to play audio", err);
@@ -44,6 +45,7 @@ export default function Home({ socket }) {
           ref={audioRef}
           src="/assets/kbc-awesome-5410.mp3"
           controls
+          loop
           hidden
         />
         <div className="container">
