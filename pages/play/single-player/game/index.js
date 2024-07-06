@@ -306,7 +306,8 @@ const GameQuestionContainer = ({ questions }) => {
 export default GameQuestionContainer;
 
 export async function getStaticProps() {
-  const res = await fetch("http://localhost:3000/questions/list.json"); // Adjust the URL as necessary
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://hackathon-team-v3-3xcv.vercel.app';
+  const res = await fetch(`${baseUrl}/questions/list.json`); // Adjust the URL as necessary
   const questions = await res.json();
   return {
     props: {
