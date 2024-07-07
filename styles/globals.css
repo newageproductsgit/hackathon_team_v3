@@ -6,7 +6,7 @@ body {
     /* Prevent the image from repeating */
     background-position: center;
     background-size: cover;
-    overflow: hidden;
+    /* overflow: hidden; */
     background-color: #4B0082;
     /* Deep purple background */
     color: white;
@@ -170,6 +170,18 @@ h1 {
     box-shadow: 10px 10px 19px black;
 }
 
+.modal_play_button {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: gold;
+    box-shadow: 10px 10px 19px rgba(255, 217, 0, 0.323);
+    border: 1px solid white;
+    padding: 15px;
+    border-radius: 15px;
+    cursor: pointer;
+
+}
+
 .image-container {
     background-color: #483D8B;
     /* Dark slate blue */
@@ -187,4 +199,65 @@ h1 {
     justify-content: center;
     align-items: center;
     gap: 20px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    /* Make sure it's on top */
+}
+
+.centeredDiv {
+    z-index: 1001;
+    display: flex;
+    position: fixed;
+    justify-self: center;
+    align-items: center;
+    flex-direction: column;
+    background: #000080;
+    border: 2px solid gold;
+    border-radius: 8px;
+    padding: 0 50px 50px;
+    /* max-width: 250px; */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modalHeader p {
+    text-align: center;
+}
+
+.modalHeader .p1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: gold
+}
+
+.modalHeader .p2 {
+    font-weight: bold;
+    font-size: 1.0rem;
+    color: white
+}
+
+.modalHeader .p2 table td {
+    border: 1px solid rgba(255, 217, 0, 0.418);
+    padding: 5px 15px;
+}
+
+.modalHeader .p2 li {
+    text-align: left;
+}
+
+.blur {
+    filter: blur(5px);
+    pointer-events: none;
+    /* Disable interactions with blurred content */
 }
