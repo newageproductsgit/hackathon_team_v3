@@ -19,19 +19,19 @@ export default function Home({ socket }) {
   const handleClick = () => {
     router.push(`/play/single-player/game`);
   };
-  useEffect(() => {
-    const playAudio = async () => {
-      if (audioRef.current) {
-        try {
-          await audioRef.current.play();
-          audioRef.current.volume = "0.2";
-          console.log("Audio playing");
-        } catch (err) {
-          console.error("Failed to play audio", err);
-        }
+  const playAudio = async () => {
+    if (audioRef.current) {
+      try {
+        audioRef.current.volume = "0.2";
+        await audioRef.current.play();
+      } catch (err) {
+        console.error("Failed to play audio", err);
       }
-    };
-    playAudio();
+    }
+  };
+  useEffect(() => {
+    console.log("came egre");
+    // setTimeout(playAudio,2000)
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
@@ -40,7 +40,7 @@ export default function Home({ socket }) {
   }, []);
   return (
     <>
-      <div>
+      <div onClick={playAudio}>
         <audio
           ref={audioRef}
           src="/assets/kbc-awesome-5410.mp3"
