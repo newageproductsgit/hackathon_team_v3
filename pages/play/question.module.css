@@ -187,6 +187,14 @@
   margin-bottom: 15px;
 }
 
+.lifeLineHeader {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-top: 100px;
+  margin-bottom: 50px;
+}
+
 .lifelineBtn {
   background-color: #990000;
   border: 2px solid #ffd700;
@@ -284,4 +292,29 @@
 .modalHeader .p2 {
   font-size: 1.0rem;
   color: white
+}
+
+@media (max-width: 700px) {
+  .timer {
+    position: relative;
+    margin: 10px 0px;
+    right: 0;
+    font-size: 1.5rem;
+  }
+  .lifelineBtn {
+    min-width: auto;
+  }
+
+  .lifeLineHeader {
+    margin: 10px auto;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .glassContainer  {
+    padding: 5px;
+  }
+  .glassContainer p {
+    margin: 0;
+  }
 }
