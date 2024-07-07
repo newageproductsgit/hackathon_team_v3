@@ -81,14 +81,14 @@
       },
       {
         "question_id": 10,
-        "question": "Which famous physicist developed the theory of relativity?",
+        "question": "Which famous physicist studied atomic structure?",
         "options": [
           "Isaac Newton",
           "Albert Einstein",
           "Stephen Hawking",
           "Niels Bohr"
         ],
-        "answer": "Albert Einstein",
+        "answer": "Niels Bohr",
         "answer_index": 1
       },
       {
@@ -324,15 +324,10 @@
       },
       {
         "question_id": 5,
-        "question": "What is the longest river in the world?",
-        "options": [
-          "Amazon River",
-          "Nile River",
-          "Yangtze River",
-          "Mississippi River"
-        ],
-        "answer": "Amazon River",
-        "answer_index": 0
+        "question": "Which company do not develop AI?",
+        "options": ["Google", "Netlify", "IBM", "Facebook"],
+        "answer": "Netlify",
+        "answer_index": 1
       },
       {
         "question_id": 6,
@@ -381,8 +376,8 @@
           "Stephen Hawking",
           "Niels Bohr"
         ],
-        "answer": "Albert Einstein",
-        "answer_index": 1
+        "answer": "Niels Bohr",
+        "answer_index": 3
       },
       {
         "question_id": 11,
