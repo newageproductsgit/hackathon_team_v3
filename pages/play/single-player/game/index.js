@@ -192,9 +192,9 @@ const GameQuestionContainer = ({ questions }) => {
       let prize =
         gameLevel + 1 == 1
           ? 0
-          : gameLevel + 1 < 5
+          : gameLevel + 1 <= 5
           ? 1000
-          : gameLevel + 1 < 10
+          : gameLevel + 1 <= 10
           ? 10000
           : 320000;
       setGamePrize(prize);
