@@ -88,6 +88,7 @@ export default function Home({ socket }) {
                 right: "0",
                 margin: "5px",
                 cursor: "pointer",
+                textDecoration:"underline"
               }}
               onClick={() => {
                 setShowStartModal(false);

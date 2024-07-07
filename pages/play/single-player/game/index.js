@@ -25,6 +25,8 @@ const GameQuestionContainer = ({ questions }) => {
 
   const [showWinnerModal, setShowWinnerModal] = useState(false);
 
+  const [show_rules_modal, setShowRulesModal] = useState(false);
+
   const easyQuestions = questions[0]?.easy || [];
   const mediumQuestions = questions[1]?.medium || [];
   const hardQuestions = questions[2]?.hard || [];
@@ -262,9 +264,7 @@ const GameQuestionContainer = ({ questions }) => {
                 </button>
               ))}
             </div>
-            <div
-              className={styles.lifeLineHeader}
-            >
+            <div className={styles.lifeLineHeader}>
               Got stuck? Use your life lines!
             </div>
             <div className={styles.lifelines}>
@@ -306,6 +306,15 @@ const GameQuestionContainer = ({ questions }) => {
               >
                 Ask the Audience
               </button>
+            </div>
+            <div style={{ textAlign: "center", cursor:"pointer", textDecoration:"underline" }}>
+              <p
+                onClick={() => {
+                  setShowRulesModal(true);
+                }}
+              >
+                Show rules
+              </p>
             </div>
           </main>
         </div>
@@ -419,6 +428,143 @@ const GameQuestionContainer = ({ questions }) => {
               className="button-1"
             >
               <b>CLOSE</b>
+            </button>
+          </div>
+        </div>
+      )}
+      {show_rules_modal && (
+        <div aria-hidden="true" className="overlay">
+          <div className="centeredDiv">
+            <div
+              className="backbutton"
+              style={{
+                position: "absolute",
+                right: "0",
+                margin: "5px",
+                cursor: "pointer",
+                textDecoration:"underline"
+              }}
+              onClick={() => {
+                setShowRulesModal(false);
+              }}
+            >
+              close
+            </div>
+            <div className="modalHeader">
+              <p className="p1">RULES</p>
+              <hr />
+              <p
+                className="p2"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignContent: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <p className="p2">Points table</p>
+                <table>
+                  <tr
+                    style={{
+                      color: "gold",
+                      background: "rgba(255, 217, 0, 0.418)",
+                    }}
+                  >
+                    <td>15</td>
+                    <td>1 crore</td>
+                  </tr>
+                  <tr>
+                    <td>14</td>
+                    <td>50,00,000</td>
+                  </tr>
+                  <tr>
+                    <td>13</td>
+                    <td>25,00,000</td>
+                  </tr>
+                  <tr>
+                    <td>12</td>
+                    <td>12,50,000</td>
+                  </tr>
+                  <tr>
+                    <td>11</td>
+                    <td>6,40,000</td>
+                  </tr>
+                  <tr
+                    style={{
+                      color: "gold",
+                      background: "rgba(255, 255, 255, 0.418)",
+                    }}
+                  >
+                    <td>10</td>
+                    <td>3,20,000</td>
+                  </tr>
+                  <tr>
+                    <td>9</td>
+                    <td>1,60,000</td>
+                  </tr>
+                  <tr>
+                    <td>8</td>
+                    <td>80,000</td>
+                  </tr>
+                  <tr>
+                    <td>7</td>
+                    <td>40,000</td>
+                  </tr>
+                  <tr>
+                    <td>6</td>
+                    <td>20,000</td>
+                  </tr>
+                  <tr
+                    style={{
+                      color: "gold",
+                      background: "rgba(255, 255, 255, 0.418)",
+                    }}
+                  >
+                    <td>5</td>
+                    <td>10,000</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>5,000</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>3,000</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>2,000</td>
+                  </tr>
+                  <tr>
+                    <td>1</td>
+                    <td>1,000</td>
+                  </tr>
+                </table>
+
+                <div>
+                  <p className="p2">Life Lines</p>
+                  <ul>
+                    <li>
+                      Fifty-Fifty: Removes two incorrect options from the
+                      choices.
+                    </li>
+                    <li>
+                      Flip the question: Allows you to change the current
+                      question to a new one.
+                    </li>
+                    <li>
+                      Audience Poll: Shows the percentage of the audience that
+                      chose each option.
+                    </li>
+                  </ul>
+                </div>
+              </p>
+            </div>
+            <button
+              className="modal_play_button"
+              onClick={() => router.push(`/play/single-player/game`)}
+            >
+              PLAY!
             </button>
           </div>
         </div>
