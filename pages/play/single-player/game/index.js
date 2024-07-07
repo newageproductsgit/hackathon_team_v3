@@ -187,6 +187,15 @@ const GameQuestionContainer = ({ questions }) => {
     } else {
       // Handle incorrect answer logic if needed
       // For example, end game or show modal
+      let prize =
+        gameLevel + 1 == 1
+          ? 0
+          : gameLevel + 1 < 5
+          ? 1000
+          : gameLevel + 1 < 10
+          ? 10000
+          : 320000;
+      setGamePrize(prize);
       setshowRestartPopup(true);
     }
   };
@@ -254,13 +263,7 @@ const GameQuestionContainer = ({ questions }) => {
               ))}
             </div>
             <div
-              style={{
-                textAlign: "center",
-                fontWeight: "bold",
-                fontSize: "1.5rem",
-                marginTop: "100px",
-                marginBottom: "50px",
-              }}
+              className={styles.lifeLineHeader}
             >
               Got stuck? Use your life lines!
             </div>
