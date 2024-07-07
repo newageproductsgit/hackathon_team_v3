@@ -303,6 +303,11 @@ const GameQuestionContainer = ({ questions }) => {
           <div className={styles.centeredDiv}>
             <div className={styles.modalHeader}>
               <p className={styles.p1}>Game Over!</p>
+              <hr />
+              <p className={styles.p2}>
+                <b>Answer is: {current_question_data?.answer}</b>
+              </p>
+              <hr />
               <p className={styles.p2}>Better luck next time!</p>
               <p className={styles.p3}>
                 Prize won: ${gamePrize.toLocaleString()}
