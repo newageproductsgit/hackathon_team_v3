@@ -23,6 +23,8 @@ const GameQuestionContainer = ({ questions }) => {
   const [aud_poll_used, setAudiencePollUsed] = useState(false);
   const [audi_poll_result, setAudiPollResult] = useState([]);
 
+  const [showWinnerModal, setShowWinnerModal] = useState(false);
+
   const easyQuestions = questions[0]?.easy || [];
   const mediumQuestions = questions[1]?.medium || [];
   const hardQuestions = questions[2]?.hard || [];
@@ -102,6 +104,7 @@ const GameQuestionContainer = ({ questions }) => {
     setFiftyFiftyDisabledIndices([]);
     setAudiencePollUsed(false);
     setFlipQuestionUsed(false);
+    setAudiencePollUsed(false);
   }
   const handleRestart = () => {
     // setTimeLeft(60);
@@ -175,6 +178,10 @@ const GameQuestionContainer = ({ questions }) => {
         if (gameLevel + 1 == 11) {
           setDisableTimer(true);
         }
+        if (gameLevel == 15) {
+          setShowWinnerModal(true);
+          return;
+        }
         fetchRandomQuestion(gameLevel + 1);
       }, 1000); // Delay to prevent rapid state updates
     } else {
@@ -207,7 +214,9 @@ const GameQuestionContainer = ({ questions }) => {
     <>
       <div
         className={`${styles.gameContainer} ${
-          showRestartPopup ? styles.blur : ""
+          showRestartPopup || showWinnerModal || show_aud_poll_modal
+            ? styles.blur
+            : ""
         }`}
       >
         <div className={`${styles.timer} ${styles.glassContainer}`}>
@@ -324,6 +333,31 @@ const GameQuestionContainer = ({ questions }) => {
             </div>
             <button onClick={handleRestart} className="button-1">
               Restart Game
+            </button>
+          </div>
+        </div>
+      )}
+      {showWinnerModal && (
+        <div aria-hidden="true" className={styles.overlay}>
+          <div className={styles.centeredDiv}>
+            <div className={styles.modalHeader}>
+              <p className={styles.p1}>You won!</p>
+              <hr />
+              <p className={styles.p3}>
+                Prize won: ${gamePrize.toLocaleString()}
+              </p>
+              <p className={styles.p3}>
+                <a
+                  style={{ textDecoration: "underline", color: "gold" }}
+                  target="blank"
+                  href="https://indianmemetemplates.com/wp-content/uploads/meri-taraf-mat-dekhiye-main-aapki-koi-sahayata-nahi-kar-paunga.jpg"
+                >
+                  Withdraw money now!
+                </a>
+              </p>
+            </div>
+            <button onClick={handleRestart} className="button-1">
+              Exit
             </button>
           </div>
         </div>
