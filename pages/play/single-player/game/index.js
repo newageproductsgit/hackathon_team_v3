@@ -19,7 +19,9 @@ const GameQuestionContainer = ({ questions }) => {
   const [fifty_fifty_disabled_indices, setFiftyFiftyDisabledIndices] = useState(
     []
   );
+  const [show_aud_poll_modal, setShowAudiPollModal] = useState(false);
   const [aud_poll_used, setAudiencePollUsed] = useState(false);
+  const [audi_poll_result, setAudiPollResult] = useState([]);
 
   const easyQuestions = questions[0]?.easy || [];
   const mediumQuestions = questions[1]?.medium || [];
@@ -109,8 +111,19 @@ const GameQuestionContainer = ({ questions }) => {
     // setGamePrize(0);
     // setQuestionsAsked([]);
     // fetchRandomQuestion(1);
-    router.replace('/');
+    router.replace("/");
   };
+  function getFourNumbersSummingTo100() {
+    // Generate three random numbers between 1 and 98
+    const num1 = Math.floor(Math.random() * 98) + 1;
+    const num2 = Math.floor(Math.random() * (99 - num1)) + 1;
+    const num3 = Math.floor(Math.random() * (100 - num1 - num2)) + 1;
+
+    // Calculate the fourth number
+    const num4 = 100 - num1 - num2 - num3;
+
+    setAudiPollResult([num1, num2, num3, num4]);
+  }
 
   const handleOptionClick = (selectedAnswer) => {
     if (selectedAnswer === answer) {
@@ -269,8 +282,15 @@ const GameQuestionContainer = ({ questions }) => {
                 Flip the question
               </button>
               <button
-                className={styles.lifelineBtn}
+                className={`${styles.lifelineBtn} ${
+                  aud_poll_used ? styles.disabledLifeline : ""
+                }`}
                 data-hover-text="Ask the audience for help"
+                onClick={() => {
+                  setShowAudiPollModal(true);
+                  getFourNumbersSummingTo100();
+                  setAudiencePollUsed(true);
+                }}
               >
                 Ask the Audience
               </button>
@@ -299,6 +319,64 @@ const GameQuestionContainer = ({ questions }) => {
             </div>
             <button onClick={handleRestart} className="button-1">
               Restart Game
+            </button>
+          </div>
+        </div>
+      )}
+      {show_aud_poll_modal && (
+        <div aria-hidden="true" className={styles.overlay}>
+          <div className={styles.centeredDiv}>
+            <div className={styles.modalHeader}>
+              <p className={styles.p1}>Audience Poll Result!</p>
+              <table
+                border="1px solid gold"
+                style={{ textAlign: "center", width: "100%" }}
+              >
+                <tr>
+                  <th>Option</th>
+                  <th>Vote in %</th>
+                </tr>
+                <tr>
+                  <td>A:</td>
+                  <td>
+                    <p className={styles.p2}>
+                      {audi_poll_result[0] + "%" ?? "25%"}
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>B:</td>
+                  <td>
+                    <p className={styles.p2}>
+                      {audi_poll_result[1] + "%" ?? "25%"}
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>C:</td>
+                  <td>
+                    <p className={styles.p2}>
+                      {audi_poll_result[2] + "%" ?? "25%"}
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>D:</td>
+                  <td>
+                    <p className={styles.p2}>
+                      {audi_poll_result[3] + "%" ?? "25%"}
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <button
+              onClick={() => {
+                setShowAudiPollModal(false);
+              }}
+              className="button-1"
+            >
+              <b>CLOSE</b>
             </button>
           </div>
         </div>
