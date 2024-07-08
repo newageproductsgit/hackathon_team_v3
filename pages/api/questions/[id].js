@@ -16,7 +16,7 @@ export default async function handler(req, res) {
       WHERE q.id NOT IN (${idArray.map(() => '?').join(', ')})
     `;
 
-    const results = await prisma.$queryRaw(query, ...idArray);
+    const results = await prisma.$queryRawUnsafe(query, ...idArray);
 
 
     // Transform the results into the desired format
