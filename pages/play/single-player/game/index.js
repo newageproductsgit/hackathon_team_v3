@@ -575,7 +575,7 @@ const GameQuestionContainer = ({ questions }) => {
 
 export default GameQuestionContainer;
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL ||
     "https://hackathon-team-v3-3xcv.vercel.app";
