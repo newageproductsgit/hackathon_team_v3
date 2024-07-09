@@ -2,21 +2,65 @@ import { useEffect, useRef, useState } from "react";
 import CreateRoom from "../components/CreateRoom";
 import JoinRoom from "../components/JoinRoom";
 import { useRouter } from "next/router";
+import { io } from "socket.io-client";
 
-export default function Home({ socket }) {
+export default function Home() {
   const { asPath } = useRouter();
   const [roomId, setRoomId] = useState("");
   const [showStartModal, setShowStartModal] = useState(false);
   const audioRef = useRef(null);
   const router = useRouter();
-  const handleRoomCreated = (newRoomId) => {
-    setRoomId(newRoomId);
-    router.push(`/room/${newRoomId}`);
-  };
+  // const handleRoomCreated = (newRoomId) => {
+  //   setRoomId(newRoomId);
+  //   router.push(`/room/${newRoomId}`);
+  // };
 
-  const handleRoomJoined = (joinedRoomId) => {
-    router.push(`/room/${joinedRoomId}`);
+  // const handleRoomJoined = (joinedRoomId) => {
+  //   router.push(`/room/${joinedRoomId}`);
+  // };
+  const [socket, setSocket] = useState(null);
+  const [message, setMessage] = useState("");
+  const [room, setRoom] = useState("");
+  const [socketID, setSocketID] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [roomName, setRoomName] = useState("")
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    socket.emit("message", { message, room });
+    setMessage("");
   };
+const joinRoomHandler = (e) =>{
+  e.preventDefault();
+  socket.emit("join-room", roomName)
+  setRoomName("")
+}
+  useEffect(() => {
+    const newSocket = io("http://localhost:3000/", {
+      transports: ["websocket"],
+      reconnection: false,
+    });
+
+    setSocket(newSocket);
+
+    newSocket.on("connect", () => {
+      setSocketID(newSocket.id);
+      console.log("connected", newSocket.id);
+    });
+
+    newSocket.on("receive-message", (data) => {
+      console.log(data);
+      setMessages([...messages, data]);
+    });
+
+    newSocket.on("Welcome", (s) => {
+      console.log(s);
+    });
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
   const handleClick = () => {
     setShowStartModal(true);
   };
@@ -61,14 +105,17 @@ export default function Home({ socket }) {
           </div>
           <div className="info-box glassContainer">
             <p>Create Room</p>
-            <CreateRoom socket={socket} onRoomCreated={handleRoomCreated} />
-            {roomId && <p>Room created! ID: {roomId}</p>}
+            {messages.map((item, index) => (
+              <p key={index}>{item}</p>
+            ))}
+            {/* <CreateRoom socket={socket} onRoomCreated={handleRoomCreated} /> */}
+            {/* {roomId && <p>Room created! ID: {roomId}</p>} */}
             <div className="cta-container">
               {/* <hr /> */}
               {/* <h2>Join a Room</h2> */}
             </div>
             <h2>Join a Room</h2>
-            <JoinRoom socket={socket} onRoomJoined={handleRoomJoined} />
+            {/* <JoinRoom socket={socket} onRoomJoined={handleRoomJoined} /> */}
           </div>
           <p>
             <b>OR</b>
@@ -77,6 +124,33 @@ export default function Home({ socket }) {
             PLAY SINGLEPLAYER
           </button>
         </div>
+      </div>
+      <div className="center-align">
+        <div className="id-socket">{socketID}</div>
+        <form onSubmit={joinRoomHandler}>
+          <h2>Join Room</h2>
+          <input 
+          placeholder="Room Name"
+          value={roomName}
+          onChange={(e) => setRoomName(e.target.value)}
+          />
+          <button type="submit">Join</button>
+        </form>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Room"
+            value={room}
+            onChange={(e) => setRoom(e.target.value)}
+          />
+          <button type="submit">Send</button>
+        </form>
       </div>
       {showStartModal && (
         <div aria-hidden="true" className="overlay">
@@ -88,7 +162,7 @@ export default function Home({ socket }) {
                 right: "0",
                 margin: "5px",
                 cursor: "pointer",
-                textDecoration:"underline"
+                textDecoration: "underline",
               }}
               onClick={() => {
                 setShowStartModal(false);

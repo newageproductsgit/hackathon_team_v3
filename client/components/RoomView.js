@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
 
-export default function RoomView({ socket, roomId }) {
+export default function RoomView() {
   const [users, setUsers] = useState([]);
 
-  useEffect(() => {
-    if (socket) {
-      socket.emit('get-room-data', roomId);
+  // useEffect(() => {
+  //   if (socket) {
+  //     socket.emit('get-room-data', roomId);
 
-      socket.on('room-update', (room) => {
-        setUsers(room.users);
-      });
+  //     socket.on('room-update', (room) => {
+  //       setUsers(room.users);
+  //     });
 
-      return () => {
-        socket.off('room-update');
-      };
-    }
-  }, [socket, roomId]);
+  //     return () => {
+  //       socket.off('room-update');
+  //     };
+  //   }
+  // }, [socket, roomId]);
 
   return (
     <div>

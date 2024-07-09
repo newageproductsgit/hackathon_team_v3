@@ -28,7 +28,13 @@ body {
     align-items: center;
     /* height: 100vh; */
 }
-
+.center-align{
+    text-align: center;
+    margin-top: 20px;
+}
+.id-socket{
+    margin-bottom: 5px;
+}
 .glassContainer {
     padding: 20px;
     background-color: #6a5acd5c;
