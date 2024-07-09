@@ -6,19 +6,19 @@ import '../styles/globals.css';
 function MyApp({ Component, pageProps }) {
   const [socket, setSocket] = useState(null)
 
-  useEffect(() => {
-    const initSocket = async () => {
-      await fetch('/api/socket')
-      const newSocket = io()
-      setSocket(newSocket)
-    }
+  // useEffect(() => {
+  //   const initSocket = async () => {
+  //     await fetch('/api/socket')
+  //     const newSocket = io()
+  //     setSocket(newSocket)
+  //   }
 
-    initSocket()
+  //   initSocket()
 
-    return () => {
-      if (socket) socket.disconnect()
-    }
-  }, [])
+  //   return () => {
+  //     if (socket) socket.disconnect()
+  //   }
+  // }, [])
 
   return <Component {...pageProps} socket={socket} />
 }
