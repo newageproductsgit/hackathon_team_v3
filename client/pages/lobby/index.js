@@ -13,7 +13,7 @@ export default function Home() {
   const [roomUsers, setRoomUsers] = useState([]);
 
   useEffect(() => {
-    const newSocket = io("http://localhost:3000/", {
+    const newSocket = io(process.env.NEXT_PUBLIC_SERVER_URL, {
       transports: ["websocket"],
       reconnection: false,
     });
