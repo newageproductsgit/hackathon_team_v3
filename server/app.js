@@ -8,7 +8,11 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3001",
+    origin: [
+      "http://localhost:3001",
+      "http://localhost:3000",
+      "https://hackathon-team-v3-9y6k.vercel.app/",
+    ],
     methods: ["GET", "POST"],
     transports: ["websocket"],
     credentials: true,
@@ -27,13 +31,13 @@ io.on("connection", (socket) => {
     if (!rooms[room]) {
       rooms[room] = [];
       // First user to join is the admin
-      rooms[room].push({ id: socket.id, username, role: 'admin' });
+      rooms[room].push({ id: socket.id, username, role: "admin" });
     } else {
       // Subsequent users are joiners
-      rooms[room].push({ id: socket.id, username, role: 'joinee' });
+      rooms[room].push({ id: socket.id, username, role: "joinee" });
     }
     console.log(`User ${username} joined room ${room}`);
-    
+
     // Emit updated user list to all clients in the room
     io.to(room).emit("room-users", rooms[room]);
   });
@@ -46,13 +50,13 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("User disconnected", socket.id);
     for (const room in rooms) {
-      rooms[room] = rooms[room].filter(user => user.id !== socket.id);
+      rooms[room] = rooms[room].filter((user) => user.id !== socket.id);
       if (rooms[room].length === 0) {
         delete rooms[room];
       } else {
         // If admin left, promote the next user to admin
-        if (!rooms[room].some(user => user.role === 'admin')) {
-          rooms[room][0].role = 'admin';
+        if (!rooms[room].some((user) => user.role === "admin")) {
+          rooms[room][0].role = "admin";
         }
         io.to(room).emit("room-users", rooms[room]);
       }
