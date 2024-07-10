@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "../../question.module.css";
 import { useRouter } from "next/router";
+import { io } from "socket.io-client";
 const option_names = ["A: ", "B: ", "C: ", "D: "];
 const GameQuestionContainer = ({ questions }) => {
   const [timeLeft, setTimeLeft] = useState(60);
@@ -26,12 +27,78 @@ const GameQuestionContainer = ({ questions }) => {
   const [showWinnerModal, setShowWinnerModal] = useState(false);
 
   const [show_rules_modal, setShowRulesModal] = useState(false);
+  const [showInvalidModal, setShowInvalidModal] = useState(false);
+
+  const [socket, setSocket] = useState(null);
+  const [socketID, setSocketID] = useState("");
+  const [username, setUsername] = useState(null);
+  const [roomName, setRoomName] = useState(null);
 
   const easyQuestions = questions[0]?.easy || [];
   const mediumQuestions = questions[1]?.medium || [];
   const hardQuestions = questions[2]?.hard || [];
 
   const router = useRouter();
+  const { roomid } = router.query;
+  async function checkRoom(room) {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/check-room/${room}`
+      );
+      const data = await response.json();
+      return data.exists;
+    } catch (error) {
+      console.error("Error checking room:", error);
+      return false;
+    }
+  }
+  useEffect(() => {
+    const fetchRoomStatus = async () => {
+      const exists = await checkRoom(roomid);
+      if (!exists) {
+        setShowInvalidModal(true);
+        setDisableTimer(true);
+      } else {
+        console.log("setting room as", roomid);
+        setRoomName(roomid);
+      }
+    };
+
+    fetchRoomStatus();
+    const newSocket = io(process.env.NEXT_PUBLIC_SERVER_URL, {
+      transports: ["websocket"],
+      reconnection: true,
+      forceNew: true,
+      closeOnBeforeunload: false,
+      autoConnect: true,
+    });
+    // const newSocket = initSocket();
+    setSocket(newSocket);
+    newSocket.on("connect", () => {
+      setSocketID(newSocket.id);
+      console.log("connected from ff page", newSocket.id);
+    });
+    newSocket.on("disconnect", () => {
+      console.log("socket gone"); // false
+    });
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    let user_name = window?.localStorage.getItem("kbc_name");
+    if (user_name) {
+      setUsername(user_name);
+      if (roomName != null && username !== null) {
+        socket.emit("join-room", { room: roomName, username });
+      }
+    } else {
+      setShowInvalidModal(true);
+      setDisableTimer(true);
+    }
+  }, [roomName, username]);
   useEffect(() => {
     if (!disableTimer) {
       const timer = setInterval(() => {
@@ -223,102 +290,125 @@ const GameQuestionContainer = ({ questions }) => {
   }
   return (
     <>
-      <div
-        className={`${styles.gameContainer} ${
-          showRestartPopup || showWinnerModal || show_aud_poll_modal
-            ? styles.blur
-            : ""
-        }`}
-      >
-        <div className={`${styles.timer} ${styles.glassContainer}`}>
-          {disableTimer ? "no time limit" : `Time left - ${timeLeft} seconds`}
-        </div>
-        <div className={styles.glassContainer}>
-          <h1 className={styles.title}>Question {gameLevel}/15</h1>
-          <div className={styles.prizeLevel}>
-            Prize won: ${gamePrize.toLocaleString()}
+      {showInvalidModal ? (
+        <div aria-hidden="true" className={styles.overlay}>
+          <div className={styles.centeredDiv}>
+            <div className={styles.modalHeader}>
+              <p className={styles.p1}>Invalid Link!</p>
+            </div>
+            <button onClick={handleRestart} className="button-1">
+              Main Page
+            </button>
           </div>
         </div>
-        <div className={styles.content}>
-          <main>
-            <div className={styles.questionBox}>
-              <p>{question}</p>
+      ) : (
+        <div
+          className={`${styles.gameContainer} ${
+            showRestartPopup || showWinnerModal || show_aud_poll_modal
+              ? styles.blur
+              : ""
+          }`}
+        >
+          <div className={`${styles.timer} ${styles.glassContainer}`}>
+            {disableTimer ? "no time limit" : `Time left - ${timeLeft} seconds`}
+          </div>
+          <div className={`${styles.username_tile} ${styles.glassContainer}`}>
+            Playing as: {username}
+          </div>
+          <div className={styles.glassContainer}>
+            <h1 className={styles.title}>Question {gameLevel}/15</h1>
+            <div className={styles.prizeLevel}>
+              Prize won: ${gamePrize.toLocaleString()}
             </div>
-            <div className={styles.answersGrid}>
-              {options.map((option, index) => (
+          </div>
+          <div className={styles.content}>
+            <main>
+              <div className={styles.questionBox}>
+                <p>{question}</p>
+              </div>
+              <div className={styles.answersGrid}>
+                {options.map((option, index) => (
+                  <button
+                    key={index}
+                    className={`${styles.answerBtn} ${
+                      index % 2 === 0
+                        ? styles.answerBtn_left
+                        : styles.answerBtn_right
+                    } ${
+                      fifty_fifty_disabled_indices.includes(index)
+                        ? styles.disabled_option
+                        : ""
+                    }`}
+                    onClick={() => handleOptionClick(option)}
+                  >
+                    {option_names[index]}
+                    {option}
+                  </button>
+                ))}
+              </div>
+              <div className={styles.lifeLineHeader}>
+                Got stuck? Use your life lines!
+              </div>
+              <div className={styles.lifelines}>
                 <button
-                  key={index}
-                  className={`${styles.answerBtn} ${
-                    index % 2 === 0
-                      ? styles.answerBtn_left
-                      : styles.answerBtn_right
-                  } ${
-                    fifty_fifty_disabled_indices.includes(index)
-                      ? styles.disabled_option
-                      : ""
+                  className={`${styles.lifelineBtn} ${
+                    fifty_fifty_used ? styles.disabledLifeline : ""
                   }`}
-                  onClick={() => handleOptionClick(option)}
+                  data-hover-text="Removes two wrong answers"
+                  onClick={() => {
+                    executeFiftyFiftyLifeline();
+                    setFiftyFiftyUsed(true);
+                  }}
                 >
-                  {option_names[index]}
-                  {option}
+                  50:50
                 </button>
-              ))}
-            </div>
-            <div className={styles.lifeLineHeader}>
-              Got stuck? Use your life lines!
-            </div>
-            <div className={styles.lifelines}>
-              <button
-                className={`${styles.lifelineBtn} ${
-                  fifty_fifty_used ? styles.disabledLifeline : ""
-                }`}
-                data-hover-text="Removes two wrong answers"
-                onClick={() => {
-                  executeFiftyFiftyLifeline();
-                  setFiftyFiftyUsed(true);
+                <button
+                  className={`${styles.lifelineBtn} ${
+                    flip_q_used ? styles.disabledLifeline : ""
+                  }`}
+                  data-hover-text="Answer another question"
+                  onClick={() => {
+                    fetchRandomQuestion(gameLevel, true);
+                    setFlipQuestionUsed(true);
+                    setFiftyFiftyDisabledIndices([]);
+                  }}
+                >
+                  Flip the question
+                </button>
+                <button
+                  className={`${styles.lifelineBtn} ${
+                    aud_poll_used ? styles.disabledLifeline : ""
+                  }`}
+                  data-hover-text="Ask the audience for help"
+                  onClick={() => {
+                    setShowAudiPollModal(true);
+                    getFourNumbersSummingTo100();
+                    setAudiencePollUsed(true);
+                  }}
+                >
+                  Ask the Audience
+                </button>
+              </div>
+              <div
+                style={{
+                  textAlign: "center",
+                  cursor: "pointer",
+                  textDecoration: "underline",
                 }}
               >
-                50:50
-              </button>
-              <button
-                className={`${styles.lifelineBtn} ${
-                  flip_q_used ? styles.disabledLifeline : ""
-                }`}
-                data-hover-text="Answer another question"
-                onClick={() => {
-                  fetchRandomQuestion(gameLevel, true);
-                  setFlipQuestionUsed(true);
-                  setFiftyFiftyDisabledIndices([]);
-                }}
-              >
-                Flip the question
-              </button>
-              <button
-                className={`${styles.lifelineBtn} ${
-                  aud_poll_used ? styles.disabledLifeline : ""
-                }`}
-                data-hover-text="Ask the audience for help"
-                onClick={() => {
-                  setShowAudiPollModal(true);
-                  getFourNumbersSummingTo100();
-                  setAudiencePollUsed(true);
-                }}
-              >
-                Ask the Audience
-              </button>
-            </div>
-            <div style={{ textAlign: "center", cursor:"pointer", textDecoration:"underline" }}>
-              <p
-                onClick={() => {
-                  setShowRulesModal(true);
-                }}
-              >
-                Show rules
-              </p>
-            </div>
-          </main>
+                <p
+                  onClick={() => {
+                    setShowRulesModal(true);
+                  }}
+                >
+                  Show rules
+                </p>
+              </div>
+            </main>
+          </div>
         </div>
-      </div>
+      )}
+
       {showRestartPopup && (
         <div aria-hidden="true" className={styles.overlay}>
           <div className={styles.centeredDiv}>
@@ -442,7 +532,7 @@ const GameQuestionContainer = ({ questions }) => {
                 right: "0",
                 margin: "5px",
                 cursor: "pointer",
-                textDecoration:"underline"
+                textDecoration: "underline",
               }}
               onClick={() => {
                 setShowRulesModal(false);

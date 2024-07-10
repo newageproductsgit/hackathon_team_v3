@@ -12,7 +12,8 @@ const io = new Server(server, {
       "http://localhost:3001",
       "http://localhost:3000",
       "https://hackathon-team-v3-9y6k.vercel.app/",
-      "https://hackathon-team-v3-9y6k.vercel.app/",
+      "https://hackathon-team-v3-lyd9.vercel.app/",
+      "https://hackathon-team-v3-3xcv.vercel.app/",
     ],
     methods: ["GET", "POST"],
     transports: ["websocket"],
@@ -24,6 +25,15 @@ app.use(cors());
 
 const rooms = {}; // Object to store room information
 
+app.get("/check-room/:room", (req, res) => {
+  const room = req.params.room;
+  if (rooms[room]) {
+    res.status(200).json({ exists: true, data: rooms[room] });
+  } else {
+    res.status(200).json({ exists: false, data: null });
+  }
+});
+
 io.on("connection", (socket) => {
   console.log("user connected", socket.id);
 
@@ -34,8 +44,15 @@ io.on("connection", (socket) => {
       // First user to join is the admin
       rooms[room].push({ id: socket.id, username, role: "admin" });
     } else {
-      // Subsequent users are joiners
-      rooms[room].push({ id: socket.id, username, role: "joinee" });
+      const userExists = rooms[room].some((user) => user.username === username);
+
+      if (!userExists) {
+        // Add new user as joiner
+        rooms[room].push({ id: socket.id, username, role: "joinee" });
+      } else {
+        // User already exists, do nothing
+        console.log(`User ${username} already present in room ${room}`);
+      }
     }
     console.log(`User ${username} joined room ${room}`);
 
@@ -46,6 +63,11 @@ io.on("connection", (socket) => {
   socket.on("message", ({ room, message, username }) => {
     console.log({ room, message, username });
     io.to(room).emit("receive-message", { message, username });
+  });
+
+  socket.on("fastest-finger-winner", ({ room, username }) => {
+    console.log({ room, username });
+    io.to(room).emit("receive-ff-winner", { room, username });
   });
 
   socket.on("disconnect", () => {

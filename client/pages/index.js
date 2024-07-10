@@ -3,12 +3,13 @@ import CreateRoom from "../components/CreateRoom";
 import JoinRoom from "../components/JoinRoom";
 import { useRouter } from "next/router";
 import { io } from "socket.io-client";
+import ChatWindow from "@/components/Chatwindow";
 
 export default function Home() {
   const { asPath } = useRouter();
   const [roomId, setRoomId] = useState("");
   const [showStartModal, setShowStartModal] = useState(false);
-  const [createRoomText,setCreateRoomText]=useState(false)
+  const [createRoomText, setCreateRoomText] = useState(false);
   const audioRef = useRef(null);
   const router = useRouter();
   const [socket, setSocket] = useState(null);
@@ -16,34 +17,35 @@ export default function Home() {
   const [room, setRoom] = useState("");
   const [socketID, setSocketID] = useState("");
   const [messages, setMessages] = useState([]);
-  const [roomName, setRoomName] = useState('')
+  const [roomName, setRoomName] = useState("");
   const [roomUsers, setRoomUsers] = useState([]);
 
-useEffect(() => {
-  const newSocket = io(process.env.NEXT_PUBLIC_SERVER_URL, {
-    transports: ["websocket"],
-    reconnection: false,
-  });
 
-  setSocket(newSocket);
+  useEffect(() => {
+    const newSocket = io(process.env.NEXT_PUBLIC_SERVER_URL, {
+      transports: ["websocket"],
+      reconnection: false,
+    });
 
-  newSocket.on("connect", () => {
-    setSocketID(newSocket.id);
-    console.log("connected", newSocket.id);
-  });
+    setSocket(newSocket);
 
-  newSocket.on("receive-message", (data) => {
-    setMessages((prev) => [...prev, data]);
-  });
+    newSocket.on("connect", () => {
+      setSocketID(newSocket.id);
+      console.log("connected", newSocket.id);
+    });
 
-  newSocket.on("room-users", (users) => {
-    setRoomUsers(users);
-  });
+    newSocket.on("receive-message", (data) => {
+      setMessages((prev) => [...prev, data]);
+    });
 
-  return () => {
-    newSocket.disconnect();
-  };
-}, []);
+    newSocket.on("room-users", (users) => {
+      setRoomUsers(users);
+    });
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
 
   const handleClick = () => {
     setShowStartModal(true);
@@ -66,7 +68,7 @@ useEffect(() => {
       }
     };
   }, []);
-  console.log(roomUsers)
+  console.log(roomUsers);
   return (
     <>
       <div onClick={playAudio} className={`${showStartModal ? "blur" : ""}`}>
@@ -240,6 +242,9 @@ useEffect(() => {
           </div>
         </div>
       )}
+      {/* <div className="chat_window_container">
+        <ChatWindow />
+      </div> */}
     </>
   );
 }
