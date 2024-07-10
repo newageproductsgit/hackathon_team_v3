@@ -1,0 +1,41 @@
+[
+  {
+    "easy": [
+      {
+        "question_id": 1,
+        "question": "What is the largest planet in our solar system?",
+        "options": ["Earth", "Mars", "Jupiter", "Saturn"],
+        "answer": "Jupiter",
+        "answer_index": 2
+      },
+      {
+        "question_id": 2,
+        "question": "What is the boiling point of water?",
+        "options": ["90°C", "100°C", "110°C", "120°C"],
+        "answer": "100°C",
+        "answer_index": 1
+      },
+      {
+        "question_id": 3,
+        "question": "What is the capital city of Japan?",
+        "options": ["Beijing", "Seoul", "Tokyo", "Bangkok"],
+        "answer": "Tokyo",
+        "answer_index": 2
+      },
+      {
+        "question_id": 4,
+        "question": "What is the smallest prime number?",
+        "options": ["0", "1", "2", "3"],
+        "answer": "2",
+        "answer_index": 2
+      },
+      {
+        "question_id": 5,
+        "question": "What is the chemical symbol for gold?",
+        "options": ["Au", "Ag", "Pb", "Fe"],
+        "answer": "Au",
+        "answer_index": 0
+      }
+    ]
+  }
+]

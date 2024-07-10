@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { io } from "socket.io-client";
+import { getSocket, initSocket } from "@/lib/socket_client";
 
 export default function Home() {
   const [socket, setSocket] = useState(null);
@@ -17,18 +18,20 @@ export default function Home() {
       transports: ["websocket"],
       reconnection: false,
     });
-
+// const newSocket = initSocket();
     setSocket(newSocket);
-
     newSocket.on("connect", () => {
       setSocketID(newSocket.id);
       console.log("connected", newSocket.id);
     });
 
     newSocket.on("receive-message", (data) => {
+      console.log('someine')
       setMessages((prev) => [...prev, data]);
     });
-
+    newSocket.on("receive-ff-winner", (data) => {
+      console.log("we got winner!", data.username);
+    });
     newSocket.on("room-users", (users) => {
       setRoomUsers(users);
     });
@@ -40,6 +43,7 @@ export default function Home() {
 
   const joinRoomHandler = (e) => {
     e.preventDefault();
+    window?.localStorage.setItem("kbc_name", username);
     if (roomName && username) {
       socket.emit("join-room", { room: roomName, username });
       setRoom(roomName);
@@ -63,7 +67,9 @@ export default function Home() {
         <input
           placeholder="Username"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => {
+            setUsername(e.target.value);
+          }}
         />
         <input
           placeholder="Room Name"

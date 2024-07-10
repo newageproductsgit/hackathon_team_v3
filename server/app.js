@@ -24,6 +24,15 @@ app.use(cors());
 
 const rooms = {}; // Object to store room information
 
+app.get("/check-room/:room", (req, res) => {
+  const room = req.params.room;
+  if (rooms[room]) {
+    res.status(200).json({ exists: true });
+  } else {
+    res.status(200).json({ exists: false });
+  }
+});
+
 io.on("connection", (socket) => {
   console.log("user connected", socket.id);
 
@@ -46,6 +55,11 @@ io.on("connection", (socket) => {
   socket.on("message", ({ room, message, username }) => {
     console.log({ room, message, username });
     io.to(room).emit("receive-message", { message, username });
+  });
+
+  socket.on("fastest-finger-winner", ({ room, username }) => {
+    console.log({ room, username });
+    io.to(room).emit("receive-ff-winner", { room, username });
   });
 
   socket.on("disconnect", () => {
