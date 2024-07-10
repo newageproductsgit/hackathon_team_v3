@@ -32,7 +32,7 @@ export default function Home() {
     const fetchRoomStatus = async () => {
       const exists = await checkRoom(roomid);
       if (!exists) {
-        setShowInvalidModal(true);
+        // setShowInvalidModal(true);
       } else {
         console.log("setting room as", roomid);
         setRoomName(roomid);
@@ -112,7 +112,7 @@ export default function Home() {
         </div>
       ) : (
         <div>
-          <h1>Game Lobby</h1>
+          <h1>Game Lobby {room}</h1>
           <div>Socket ID: {socketID}</div>
 
           <form onSubmit={joinRoomHandler}>
@@ -132,36 +132,82 @@ export default function Home() {
           </form>
 
           {room && (
-            <div>
-              <h2>Room: {room}</h2>
-              <h3>Users in this room:</h3>
-              <ul>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignContent: "center",
+                alignItems: "center",
+                gap: "10px",
+              }}
+            >
+              <div
+                className={styles.glassContainer}
+                style={{ textAlign: "center" }}
+              >
+                <h3>Users in this room:</h3>
                 {roomUsers.map((user, index) => (
-                  <li key={index}>
-                    {user.username}
+                  <>
+                    {index + 1}. {user.username}
                     {user.role === "admin" && <span> (admin)</span>}
                     {user.role === "joinee" && <span> (joinee)</span>}
-                  </li>
+                  </>
                 ))}
-              </ul>
-              <form onSubmit={handleSubmit}>
-                <input
-                  type="text"
-                  placeholder="Message"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                />
-                <button type="submit">Send</button>
-              </form>
-              <div>
-                {messages.map((msg, index) => (
-                  <p key={index}>
-                    {msg.username}: {msg.message}
-                  </p>
-                ))}
+              </div>
+              <div
+                className={styles.glassContainer}
+                style={{
+                  width: "20%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "stretch",
+                }}
+              >
+                <div style={{ textAlign: "center" }}>
+                  Chat with your friends!
+                </div>
+                <form onSubmit={handleSubmit} style={{ display: "flex" }}>
+                  <input
+                    type="text"
+                    placeholder="Message"
+                    style={{ width: "100%", height: "20px" }}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                  />
+                  <button type="submit">Send</button>
+                </form>
+                <div
+                  style={{
+                    marginTop: "20px",
+                    padding: "10px",
+                    border: "2px solid white",
+                    borderRadius: "10px",
+                  }}
+                >
+                  {messages.map((msg, index) => (
+                    <p key={index}>
+                      {msg.username}: {msg.message}
+                    </p>
+                  ))}
+                </div>
               </div>
             </div>
           )}
+          <div
+            style={{
+              display: "flex",
+              marginTop: "20px",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <div className={styles.glassContainer} style={{ height: "300px", overflowY:"scroll" }}>
+              <h3>Room events</h3>
+              <h3>Winner001 is currently at question 10/15</h3>
+            </div>
+          </div>
         </div>
       )}
       ;
