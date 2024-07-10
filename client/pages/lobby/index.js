@@ -32,7 +32,7 @@ export default function Home() {
     const fetchRoomStatus = async () => {
       const exists = await checkRoom(roomid);
       if (!exists) {
-        // setShowInvalidModal(true);
+        setShowInvalidModal(true);
       } else {
         console.log("setting room as", roomid);
         setRoomName(roomid);
