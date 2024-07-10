@@ -53,18 +53,18 @@ const GameQuestionContainer = ({ questions }) => {
     }
   }
   useEffect(() => {
-    const fetchRoomStatus = async () => {
-      const exists = await checkRoom(roomid);
-      if (!exists) {
-        setShowInvalidModal(true);
-        setDisableTimer(true);
-      } else {
-        console.log("setting room as", roomid);
-        setRoomName(roomid);
-      }
-    };
+    // const fetchRoomStatus = async () => {
+    //   const exists = await checkRoom(roomid);
+    //   if (!exists) {
+    //     setShowInvalidModal(true);
+    //     setDisableTimer(true);
+    //   } else {
+    //     console.log("setting room as", roomid);
+    //     setRoomName(roomid);
+    //   }
+    // };
 
-    fetchRoomStatus();
+    // fetchRoomStatus();
     const newSocket = io(process.env.NEXT_PUBLIC_SERVER_URL, {
       transports: ["websocket"],
       reconnection: true,
@@ -91,8 +91,8 @@ const GameQuestionContainer = ({ questions }) => {
     let user_name = window?.localStorage.getItem("kbc_name");
     if (user_name) {
       setUsername(user_name);
-      if (roomName != null && username !== null) {
-        socket.emit("join-room", { room: roomName, username });
+      if (roomid != null && username !== null) {
+        socket.emit("join-room", { room: roomid, username });
       }
     } else {
       setShowInvalidModal(true);
