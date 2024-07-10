@@ -38,7 +38,7 @@ io.on("connection", (socket) => {
   console.log("user connected", socket.id);
 
   socket.on("join-room", ({ room, username, source }) => {
-    console.log({ room, username, source }, "rooms=>",rooms);
+    console.log({ room, username, source }, "rooms=>", rooms);
     socket.join(room);
     if (!rooms[room]) {
       rooms[room] = [];
@@ -64,6 +64,11 @@ io.on("connection", (socket) => {
   socket.on("message", ({ room, message, username }) => {
     console.log({ room, message, username });
     io.to(room).emit("receive-message", { message, username });
+  });
+
+  socket.on("game-started", ({ room }) => {
+    console.log({ room });
+    io.to(room).emit("start-notification", { room });
   });
 
   socket.on("fastest-finger-winner", ({ room, username }) => {

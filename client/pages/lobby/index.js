@@ -12,7 +12,7 @@ export default function Home() {
   const [roomName, setRoomName] = useState(null);
   const [username, setUsername] = useState(null);
   const [roomUsers, setRoomUsers] = useState([]);
-
+  const [isadmin, setIsAdmin] = useState(false);
   const [showInvalidModal, setShowInvalidModal] = useState(false);
   const router = useRouter();
   const { roomid } = router.query;
@@ -58,8 +58,20 @@ export default function Home() {
     newSocket.on("receive-ff-winner", (data) => {
       console.log("we got winner!", data.username);
     });
+    newSocket.on("start-notification", (data) => {
+      console.log("game started --", data.room);
+      router.push(`/play/room/fastest-finger/${roomid}`);
+    });
     newSocket.on("room-users", (users) => {
       setRoomUsers(users);
+      const btnValue = window?.localStorage.getItem("kbc_name");
+      if (btnValue) {
+        users.map((item) => {
+          if (item.username == btnValue && item.role == "admin") {
+            setIsAdmin(true);
+          }
+        });
+      }
     });
 
     return () => {
@@ -100,7 +112,11 @@ export default function Home() {
       setMessage("");
     }
   };
-
+  const handlerGameStart = () => {
+    socket.emit("game-started", { room: roomid });
+    console.log(roomid, "click-handle");
+  };
+  console.log(isadmin, "is-admin");
   return (
     <>
       {showInvalidModal ? (
@@ -117,7 +133,10 @@ export default function Home() {
       ) : (
         <div>
           <h1>Game Lobby {room}</h1>
-          <div>Socket ID: {socketID}</div>
+          {isadmin && (
+            <button onClick={() => handlerGameStart()}>Start Game</button>
+          )}
+          {/* <div>Socket ID: {socketID}</div>
 
           <form onSubmit={joinRoomHandler}>
             <input
@@ -133,7 +152,7 @@ export default function Home() {
               onChange={(e) => setRoomName(e.target.value)}
             />
             <button type="submit">Join Room</button>
-          </form>
+          </form> */}
 
           {room && (
             <div
