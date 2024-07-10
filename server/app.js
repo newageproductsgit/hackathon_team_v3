@@ -27,9 +27,9 @@ const rooms = {}; // Object to store room information
 app.get("/check-room/:room", (req, res) => {
   const room = req.params.room;
   if (rooms[room]) {
-    res.status(200).json({ exists: true });
+    res.status(200).json({ exists: true, data: rooms[room] });
   } else {
-    res.status(200).json({ exists: false });
+    res.status(200).json({ exists: false, data: null });
   }
 });
 
