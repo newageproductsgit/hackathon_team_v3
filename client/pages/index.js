@@ -18,33 +18,7 @@ export default function Home() {
   const [messages, setMessages] = useState([]);
   const [roomName, setRoomName] = useState('')
   const [roomUsers, setRoomUsers] = useState([]);
-  const [name, setName] = useState("");
 
-console.log('roomname',roomName)
-  const handleRoomCreated = (newRoomId) => {
-    console.log(newRoomId)
-    setRoomId(newRoomId);
-    setCreateRoomText(true)
-    setTimeout(()=>{
-     setCreateRoomText(false)
-    },3000)
-    // router.push(`/room/${newRoomId}`);
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    socket.emit("message", { message, room });
-    setMessage("");
-  };
-  
-  const handleJoin = (e) => {
-    e.preventDefault();
-    socket.emit("join-room", {userName: name });
-  };
-const joinRoomHandler = (e) =>{
-  e.preventDefault();
-  socket.emit("join-room", roomName)
-  setRoomName("")
-}
 useEffect(() => {
   const newSocket = io(process.env.NEXT_PUBLIC_SERVER_URL, {
     transports: ["websocket"],
@@ -115,79 +89,19 @@ useEffect(() => {
           </div>
           <div className="info-box glassContainer">
             <div className="create-room">
-            {
-              !roomId ?
-              <>
-                  <p>Create Room</p>
-                  <CreateRoom socket={socket} onRoomCreated={handleRoomCreated} />
-              </>
-              :
-              createRoomText && roomId ?
-              <>
-                  <p>Create Room</p>
-                  <CreateRoom socket={socket} onRoomCreated={handleRoomCreated} setRoomName={setRoomName} roomName={roomName}/>
-                  <p>Your Room is created successfully!</p>
-              </>
-              :
-              <></>
-            }
+              <p>Create Or Join Room</p>
+              <CreateRoom socket={socket} roomUsers={roomUsers} />
           </div>
-          <div className="join-room">
-            {
-              roomId && !createRoomText ?
-               <>
-                     <h2>Join a Room</h2>
-                     <JoinRoom socket={socket} name={name} setName={setName} handleJoin={handleJoin}/>
-               </>
-               :
-               <></>
-            }
-      
           </div>
-          <ul>
-            {roomUsers.map((user, index) => (
-              <li key={index}>
-                {user.username}
-                {user.role === "admin" && <span> (admin)</span>}
-                {user.role === "joinee" && <span> (joinee)</span>}
-              </li>
-            ))}
-          </ul>
-          </div>
-          {!roomId && <><p>
+          <><p>
             <b>OR</b>
           </p>
           <button onClick={handleClick} className="single_p_button">
             PLAY SINGLEPLAYER
-          </button></>}
-        </div>
+          </button></>
+          </div>
       </div>
       <div className="center-align">
-        {/* <div className="id-socket">{socketID}</div> */}
-        {/* <form onSubmit={joinRoomHandler}>
-          <h2>Join Room</h2>
-          <input 
-          placeholder="Room Name"
-          value={roomName}
-          onChange={(e) => setRoomName(e.target.value)}
-          />
-          <button type="submit">Join</button>
-        </form> */}
-        {/* <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Room"
-            value={room}
-            onChange={(e) => setRoom(e.target.value)}
-          />
-          <button type="submit">Send</button>
-        </form> */}
       </div>
       {showStartModal && (
         <div aria-hidden="true" className="overlay">

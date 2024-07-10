@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import "../styles/Home.module.css";
-export default function CreateRoom({ socket, onRoomCreated}) {
-  const [roomCreated,setRoomCreated] =useState(false)
-  const [roomName, setRoomName] = useState('')
+import { useRouter } from "next/router";
 
+export default function CreateRoom({ socket,roomUsers}) {
+  const [roomName, setRoomName] = useState('')
+  const [name, setName] = useState("");
+  const router=useRouter()
+  console.log(router)
   const createRoom = (e) => {
     e.preventDefault();
-    const newRoomId = uuidv4();
-    socket.emit("create-room", { roomId: newRoomId,roomName:roomName});
-    onRoomCreated(newRoomId);
-    setRoomCreated(newRoomId ? true : false) 
+    socket.emit("join-room", { room: roomName, name });
+    if(roomUsers.length>0){
+      router.push(`/lobby?${roomName}`)
+    }
   };
 
   return (
@@ -21,10 +24,16 @@ export default function CreateRoom({ socket, onRoomCreated}) {
         value={roomName}
         onChange={(e) =>setRoomName(e.target.value)}
         placeholder="Enter Room Name"
-        disabled={roomCreated}
       />
-      <button className="button-1 marginLeft" type='submit'>
-        Create Room
+       <input
+          type="text"
+          className="create-input"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Enter Your Name"
+        />
+      <button className="button-1 marginLeft" type='submit' style={{marginTop:'20px'}}>
+        Create/Join Room
       </button>
     </form>
   );
