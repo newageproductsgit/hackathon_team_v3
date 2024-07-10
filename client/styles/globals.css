@@ -269,3 +269,6 @@ h1 {
     pointer-events: none;
     /* Disable interactions with blurred content */
 }
+.info-box.glassContainer .inputs{
+margin-bottom:10px;
+}

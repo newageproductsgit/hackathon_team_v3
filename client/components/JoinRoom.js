@@ -1,14 +1,7 @@
 import { useState } from "react";
 
-export default function JoinRoom({ socket, onRoomJoined }) {
+export default function JoinRoom({name,setName,handleJoin}) {
   const [roomId, setRoomId] = useState("");
-  const [name, setName] = useState("");
-
-  const handleJoin = (e) => {
-    e.preventDefault();
-    socket.emit("join-room", { roomId, userName: name });
-    onRoomJoined(roomId);
-  };
 
   return (
     <form onSubmit={handleJoin}>
