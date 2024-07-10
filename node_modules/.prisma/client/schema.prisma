@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model answers {
+  id             Int              @id @default(autoincrement())
+  question_id    Int?
+  answer_text    String           @db.Text
+  questions      questions?       @relation(fields: [question_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "answers_ibfk_1")
+  user_responses user_responses[]
+
+  @@index([question_id], map: "question_id")
+}
+
+model categories {
+  id        Int         @id @default(autoincrement())
+  name      String      @db.VarChar(255)
+  questions questions[]
+}
+
+model questions {
+  id                Int                        @id @default(autoincrement())
+  category_id       Int?
+  question_text     String                     @db.Text
+  difficulty_level  questions_difficulty_level
+  correct_answer_id Int?
+  answers           answers[]
+  categories        categories?                @relation(fields: [category_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "questions_ibfk_1")
+  user_responses    user_responses[]
+
+  @@index([category_id], map: "category_id")
+}
+
+model user_responses {
+  id          Int         @id @default(autoincrement())
+  user_id     Int?
+  question_id Int?
+  answer_id   Int?
+  is_correct  Boolean?
+  users       game_users? @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_responses_ibfk_1")
+  questions   questions?  @relation(fields: [question_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_responses_ibfk_2")
+  answers     answers?    @relation(fields: [answer_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_responses_ibfk_3")
+
+  @@index([answer_id], map: "answer_id")
+  @@index([question_id], map: "question_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model room_tbl {
+  id   Int @id @default(autoincrement())
+  busy Int @default(0)
+}
+
+model game_users {
+  id             Int              @id @default(autoincrement())
+  username       String           @db.VarChar(255)
+  score          Int?             @default(0)
+  user_responses user_responses[]
+}
+
+enum questions_difficulty_level {
+  easy
+  medium
+  hard
+}
