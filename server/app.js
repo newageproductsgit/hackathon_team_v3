@@ -13,6 +13,7 @@ const io = new Server(server, {
       "http://localhost:3000",
       "https://hackathon-team-v3-9y6k.vercel.app/",
       "https://hackathon-team-v3-lyd9.vercel.app/",
+      "https://hackathon-team-v3-3xcv.vercel.app/",
     ],
     methods: ["GET", "POST"],
     transports: ["websocket"],
