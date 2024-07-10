@@ -43,8 +43,15 @@ io.on("connection", (socket) => {
       // First user to join is the admin
       rooms[room].push({ id: socket.id, username, role: "admin" });
     } else {
-      // Subsequent users are joiners
-      rooms[room].push({ id: socket.id, username, role: "joinee" });
+      const userExists = rooms[room].some((user) => user.username === username);
+
+      if (!userExists) {
+        // Add new user as joiner
+        rooms[room].push({ id: socket.id, username, role: "joinee" });
+      } else {
+        // User already exists, do nothing
+        console.log(`User ${username} already present in room ${room}`);
+      }
     }
     console.log(`User ${username} joined room ${room}`);
 
