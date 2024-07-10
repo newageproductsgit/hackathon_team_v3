@@ -12,6 +12,9 @@ export default function Home() {
   const [roomName, setRoomName] = useState(null);
   const [username, setUsername] = useState(null);
   const [roomUsers, setRoomUsers] = useState([]);
+
+  const [showInvalidModal, setShowInvalidModal] = useState(false);
+  const router = useRouter();
   const { roomid } = router.query;
   async function checkRoom(room) {
     try {
@@ -94,57 +97,73 @@ export default function Home() {
   };
 
   return (
-    <div>
-      <h1>Game Lobby</h1>
-      <div>Socket ID: {socketID}</div>
-
-      <form onSubmit={joinRoomHandler}>
-        <input
-          placeholder="Username"
-          value={username}
-          onChange={(e) => {
-            setUsername(e.target.value);
-          }}
-        />
-        <input
-          placeholder="Room Name"
-          value={roomName}
-          onChange={(e) => setRoomName(e.target.value)}
-        />
-        <button type="submit">Join Room</button>
-      </form>
-
-      {room && (
-        <div>
-          <h2>Room: {room}</h2>
-          <h3>Users in this room:</h3>
-          <ul>
-            {roomUsers.map((user, index) => (
-              <li key={index}>
-                {user.username}
-                {user.role === "admin" && <span> (admin)</span>}
-                {user.role === "joinee" && <span> (joinee)</span>}
-              </li>
-            ))}
-          </ul>
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              placeholder="Message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
-            <button type="submit">Send</button>
-          </form>
-          <div>
-            {messages.map((msg, index) => (
-              <p key={index}>
-                {msg.username}: {msg.message}
-              </p>
-            ))}
+    <>
+      {showInvalidModal ? (
+        <div aria-hidden="true" className={styles.overlay}>
+          <div className={styles.centeredDiv}>
+            <div className={styles.modalHeader}>
+              <p className={styles.p1}>Invalid Link!</p>
+            </div>
+            <button onClick={handleRestart} className="button-1">
+              Main Page
+            </button>
           </div>
         </div>
+      ) : (
+        <div>
+          <h1>Game Lobby</h1>
+          <div>Socket ID: {socketID}</div>
+
+          <form onSubmit={joinRoomHandler}>
+            <input
+              placeholder="Username"
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
+            />
+            <input
+              placeholder="Room Name"
+              value={roomName}
+              onChange={(e) => setRoomName(e.target.value)}
+            />
+            <button type="submit">Join Room</button>
+          </form>
+
+          {room && (
+            <div>
+              <h2>Room: {room}</h2>
+              <h3>Users in this room:</h3>
+              <ul>
+                {roomUsers.map((user, index) => (
+                  <li key={index}>
+                    {user.username}
+                    {user.role === "admin" && <span> (admin)</span>}
+                    {user.role === "joinee" && <span> (joinee)</span>}
+                  </li>
+                ))}
+              </ul>
+              <form onSubmit={handleSubmit}>
+                <input
+                  type="text"
+                  placeholder="Message"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                />
+                <button type="submit">Send</button>
+              </form>
+              <div>
+                {messages.map((msg, index) => (
+                  <p key={index}>
+                    {msg.username}: {msg.message}
+                  </p>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       )}
-    </div>
+      ;
+    </>
   );
 }
