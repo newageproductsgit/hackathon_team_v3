@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import CreateRoom from "../components/CreateRoom";
-import JoinRoom from "../components/JoinRoom";
 import { useRouter } from "next/router";
 import { io } from "socket.io-client";
 import ChatWindow from "@/components/Chatwindow";
@@ -19,7 +18,6 @@ export default function Home() {
   const [messages, setMessages] = useState([]);
   const [roomName, setRoomName] = useState("");
   const [roomUsers, setRoomUsers] = useState([]);
-
 
   useEffect(() => {
     const newSocket = io(process.env.NEXT_PUBLIC_SERVER_URL, {
@@ -92,19 +90,35 @@ export default function Home() {
           <div className="info-box glassContainer">
             <div className="create-room">
               <p>Create Or Join Room</p>
+              {/* <button
+                onClick={() => {
+                  console.log("form submitted ", {
+                    room: roomName,
+                    name: "name",
+                  });
+                  window?.localStorage.setItem("kbc_name", "name");
+                  socket.emit("join-room", { room: "123", username: "name" });
+                  setTimeout(() => {
+                    router.push(`/lobby?roomid=${roomName}`);
+                  }, 1000);
+                }}
+              >
+                click
+              </button> */}
               <CreateRoom socket={socket} roomUsers={roomUsers} />
+            </div>
           </div>
-          </div>
-          <><p>
-            <b>OR</b>
-          </p>
-          <button onClick={handleClick} className="single_p_button">
-            PLAY SINGLEPLAYER
-          </button></>
-          </div>
+          <>
+            <p>
+              <b>OR</b>
+            </p>
+            <button onClick={handleClick} className="single_p_button">
+              PLAY SINGLEPLAYER
+            </button>
+          </>
+        </div>
       </div>
-      <div className="center-align">
-      </div>
+      <div className="center-align"></div>
       {showStartModal && (
         <div aria-hidden="true" className="overlay">
           <div className="centeredDiv">

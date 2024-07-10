@@ -29,17 +29,17 @@ export default function Home() {
     }
   }
   useEffect(() => {
-    const fetchRoomStatus = async () => {
-      const exists = await checkRoom(roomid);
-      if (!exists) {
-        setShowInvalidModal(true);
-      } else {
-        console.log("setting room as", roomid);
-        setRoomName(roomid);
-      }
-    };
+    // const fetchRoomStatus = async () => {
+    //   const exists = await checkRoom(roomid);
+    //   if (!exists) {
+    //     setShowInvalidModal(true);
+    //   } else {
+    //     console.log("setting room as", roomid);
+    //     setRoomName(roomid);
+    //   }
+    // };
 
-    fetchRoomStatus();
+    // fetchRoomStatus();
     const newSocket = io(process.env.NEXT_PUBLIC_SERVER_URL, {
       transports: ["websocket"],
       reconnection: false,
@@ -70,8 +70,13 @@ export default function Home() {
     let user_name = window?.localStorage.getItem("kbc_name");
     if (user_name) {
       setUsername(user_name);
-      if (room != null && username !== null) {
-        socket.emit("join-room", { room: roomName, username });
+      if (roomid != null && username !== null) {
+        setRoom(roomid);
+        socket.emit("join-room", {
+          room: roomid,
+          username: username,
+          source: "lobby",
+        });
       }
     } else {
       setShowInvalidModal(true);
@@ -81,7 +86,7 @@ export default function Home() {
     e.preventDefault();
     window?.localStorage.setItem("kbc_name", username);
     if (roomName && username) {
-      socket.emit("join-room", { room: roomName, username });
+      // socket.emit("join-room", { room: roomName, username });
       setRoom(roomName);
     }
   };
@@ -202,7 +207,10 @@ export default function Home() {
               justifyContent: "center",
             }}
           >
-            <div className={styles.glassContainer} style={{ height: "300px", overflowY:"scroll" }}>
+            <div
+              className={styles.glassContainer}
+              style={{ height: "300px", overflowY: "scroll" }}
+            >
               <h3>Room events</h3>
               <h3>Winner001 is currently at question 10/15</h3>
             </div>

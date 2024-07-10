@@ -37,7 +37,8 @@ app.get("/check-room/:room", (req, res) => {
 io.on("connection", (socket) => {
   console.log("user connected", socket.id);
 
-  socket.on("join-room", ({ room, username }) => {
+  socket.on("join-room", ({ room, username, source }) => {
+    console.log({ room, username, source }, "rooms=>",rooms);
     socket.join(room);
     if (!rooms[room]) {
       rooms[room] = [];

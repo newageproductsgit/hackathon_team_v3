@@ -7,11 +7,14 @@ export default function CreateRoom({ socket, roomUsers }) {
   const [roomName, setRoomName] = useState("");
   const [name, setName] = useState("");
   const router = useRouter();
-  console.log(router);
   const createRoom = (e) => {
     e.preventDefault();
     window?.localStorage.setItem("kbc_name", name);
-    socket.emit("join-room", { room: roomName, name });
+    socket.emit("join-room", {
+      room: roomName,
+      username: name,
+      source: "createRoom",
+    });
     router.push(`/lobby?roomid=${roomName}`);
   };
 
