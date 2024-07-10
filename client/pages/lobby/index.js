@@ -75,7 +75,6 @@ export default function Home() {
       }
     } else {
       setShowInvalidModal(true);
-      setDisableTimer(true);
     }
   }, [room, username]);
   const joinRoomHandler = (e) => {
