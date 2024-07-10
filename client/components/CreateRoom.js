@@ -11,9 +11,7 @@ export default function CreateRoom({ socket,roomUsers}) {
   const createRoom = (e) => {
     e.preventDefault();
     socket.emit("join-room", { room: roomName, name });
-    if(roomUsers.length>0){
       router.push(`/lobby?roomid=${roomName}`)
-    }
   };
 
   return (
