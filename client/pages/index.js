@@ -3,12 +3,13 @@ import CreateRoom from "../components/CreateRoom";
 import JoinRoom from "../components/JoinRoom";
 import { useRouter } from "next/router";
 import { io } from "socket.io-client";
+import ChatWindow from "@/components/Chatwindow";
 
 export default function Home() {
   const { asPath } = useRouter();
   const [roomId, setRoomId] = useState("");
   const [showStartModal, setShowStartModal] = useState(false);
-  const [createRoomText,setCreateRoomText]=useState(false)
+  const [createRoomText, setCreateRoomText] = useState(false);
   const audioRef = useRef(null);
   const router = useRouter();
   const [socket, setSocket] = useState(null);
@@ -16,18 +17,18 @@ export default function Home() {
   const [room, setRoom] = useState("");
   const [socketID, setSocketID] = useState("");
   const [messages, setMessages] = useState([]);
-  const [roomName, setRoomName] = useState('')
+  const [roomName, setRoomName] = useState("");
   const [roomUsers, setRoomUsers] = useState([]);
   const [name, setName] = useState("");
 
-console.log('roomname',roomName)
+  console.log("roomname", roomName);
   const handleRoomCreated = (newRoomId) => {
-    console.log(newRoomId)
+    console.log(newRoomId);
     setRoomId(newRoomId);
-    setCreateRoomText(true)
-    setTimeout(()=>{
-     setCreateRoomText(false)
-    },3000)
+    setCreateRoomText(true);
+    setTimeout(() => {
+      setCreateRoomText(false);
+    }, 3000);
     // router.push(`/room/${newRoomId}`);
   };
   const handleSubmit = (e) => {
@@ -35,41 +36,41 @@ console.log('roomname',roomName)
     socket.emit("message", { message, room });
     setMessage("");
   };
-  
+
   const handleJoin = (e) => {
     e.preventDefault();
-    socket.emit("join-room", {userName: name });
+    socket.emit("join-room", { userName: name });
   };
-const joinRoomHandler = (e) =>{
-  e.preventDefault();
-  socket.emit("join-room", roomName)
-  setRoomName("")
-}
-useEffect(() => {
-  const newSocket = io(process.env.NEXT_PUBLIC_SERVER_URL, {
-    transports: ["websocket"],
-    reconnection: false,
-  });
-
-  setSocket(newSocket);
-
-  newSocket.on("connect", () => {
-    setSocketID(newSocket.id);
-    console.log("connected", newSocket.id);
-  });
-
-  newSocket.on("receive-message", (data) => {
-    setMessages((prev) => [...prev, data]);
-  });
-
-  newSocket.on("room-users", (users) => {
-    setRoomUsers(users);
-  });
-
-  return () => {
-    newSocket.disconnect();
+  const joinRoomHandler = (e) => {
+    e.preventDefault();
+    socket.emit("join-room", roomName);
+    setRoomName("");
   };
-}, []);
+  useEffect(() => {
+    const newSocket = io(process.env.NEXT_PUBLIC_SERVER_URL, {
+      transports: ["websocket"],
+      reconnection: false,
+    });
+
+    setSocket(newSocket);
+
+    newSocket.on("connect", () => {
+      setSocketID(newSocket.id);
+      console.log("connected", newSocket.id);
+    });
+
+    newSocket.on("receive-message", (data) => {
+      setMessages((prev) => [...prev, data]);
+    });
+
+    newSocket.on("room-users", (users) => {
+      setRoomUsers(users);
+    });
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
 
   const handleClick = () => {
     setShowStartModal(true);
@@ -92,7 +93,7 @@ useEffect(() => {
       }
     };
   }, []);
-  console.log(roomUsers)
+  console.log(roomUsers);
   return (
     <>
       <div onClick={playAudio} className={`${showStartModal ? "blur" : ""}`}>
@@ -115,51 +116,64 @@ useEffect(() => {
           </div>
           <div className="info-box glassContainer">
             <div className="create-room">
-            {
-              !roomId ?
-              <>
+              {!roomId ? (
+                <>
                   <p>Create Room</p>
-                  <CreateRoom socket={socket} onRoomCreated={handleRoomCreated} />
-              </>
-              :
-              createRoomText && roomId ?
-              <>
+                  <CreateRoom
+                    socket={socket}
+                    onRoomCreated={handleRoomCreated}
+                  />
+                </>
+              ) : createRoomText && roomId ? (
+                <>
                   <p>Create Room</p>
-                  <CreateRoom socket={socket} onRoomCreated={handleRoomCreated} setRoomName={setRoomName} roomName={roomName}/>
+                  <CreateRoom
+                    socket={socket}
+                    onRoomCreated={handleRoomCreated}
+                    setRoomName={setRoomName}
+                    roomName={roomName}
+                  />
                   <p>Your Room is created successfully!</p>
-              </>
-              :
-              <></>
-            }
+                </>
+              ) : (
+                <></>
+              )}
+            </div>
+            <div className="join-room">
+              {roomId && !createRoomText ? (
+                <>
+                  <h2>Join a Room</h2>
+                  <JoinRoom
+                    socket={socket}
+                    name={name}
+                    setName={setName}
+                    handleJoin={handleJoin}
+                  />
+                </>
+              ) : (
+                <></>
+              )}
+            </div>
+            <ul>
+              {roomUsers.map((user, index) => (
+                <li key={index}>
+                  {user.username}
+                  {user.role === "admin" && <span> (admin)</span>}
+                  {user.role === "joinee" && <span> (joinee)</span>}
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="join-room">
-            {
-              roomId && !createRoomText ?
-               <>
-                     <h2>Join a Room</h2>
-                     <JoinRoom socket={socket} name={name} setName={setName} handleJoin={handleJoin}/>
-               </>
-               :
-               <></>
-            }
-      
-          </div>
-          <ul>
-            {roomUsers.map((user, index) => (
-              <li key={index}>
-                {user.username}
-                {user.role === "admin" && <span> (admin)</span>}
-                {user.role === "joinee" && <span> (joinee)</span>}
-              </li>
-            ))}
-          </ul>
-          </div>
-          {!roomId && <><p>
-            <b>OR</b>
-          </p>
-          <button onClick={handleClick} className="single_p_button">
-            PLAY SINGLEPLAYER
-          </button></>}
+          {!roomId && (
+            <>
+              <p>
+                <b>OR</b>
+              </p>
+              <button onClick={handleClick} className="single_p_button">
+                PLAY SINGLEPLAYER
+              </button>
+            </>
+          )}
         </div>
       </div>
       <div className="center-align">
@@ -326,6 +340,9 @@ useEffect(() => {
           </div>
         </div>
       )}
+      {/* <div className="chat_window_container">
+        <ChatWindow />
+      </div> */}
     </>
   );
 }

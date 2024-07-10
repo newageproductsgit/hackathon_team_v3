@@ -31,6 +31,8 @@ const GameQuestionContainer = ({ questions }) => {
 
   const [show_rules_modal, setShowRulesModal] = useState(false);
 
+  const [showInvalidModal, setShowInvalidModal] = useState(false);
+
   const [correct_answers, setCorrectAnswers] = useState(0);
   const [wrong_answers, setWrongAnswers] = useState(0);
 
@@ -60,7 +62,8 @@ const GameQuestionContainer = ({ questions }) => {
     const fetchRoomStatus = async () => {
       const exists = await checkRoom(roomid);
       if (!exists) {
-        alert("invalid room");
+        setShowInvalidModal(true);
+        setDisableTimer(true);
       } else {
         console.log("setting room as", roomid);
         setRoomName(roomid);
@@ -89,7 +92,9 @@ const GameQuestionContainer = ({ questions }) => {
       console.log("data");
     });
     newSocket.on("receive-ff-winner", (data) => {
-      setShowLoserModal(true);
+      if (!showWinnerModal) {
+        setShowLoserModal(true);
+      }
       setFFWinnerName(data.username);
       setDisableTimer(true);
     });
@@ -97,7 +102,7 @@ const GameQuestionContainer = ({ questions }) => {
     return () => {
       newSocket.disconnect();
     };
-  }, []);
+  }, [showWinnerModal]);
   useEffect(() => {
     if (!disableTimer) {
       const timer = setInterval(() => {
@@ -125,7 +130,8 @@ const GameQuestionContainer = ({ questions }) => {
         socket.emit("join-room", { room: roomName, username });
       }
     } else {
-      alert("no usernam" + user_name);
+      setShowInvalidModal(true);
+      setDisableTimer(true);
     }
   }, [roomName, username]);
   useEffect(() => {
@@ -271,6 +277,7 @@ const GameQuestionContainer = ({ questions }) => {
           // emitWinnerEvent();
           setShowWinnerModal(true);
           setDisableTimer(true);
+          window?.localStorage.setItem("ffwinner", true);
           if (roomName && username) {
             socket.emit("fastest-finger-winner", {
               room: roomName,
@@ -319,114 +326,128 @@ const GameQuestionContainer = ({ questions }) => {
   }
   return (
     <>
-      <div
-        className={`${styles.gameContainer} ${
-          showRestartPopup ||
-          showWinnerModal ||
-          show_aud_poll_modal ||
-          showLoserModal
-            ? styles.blur
-            : ""
-        }`}
-      >
-        <div className={`${styles.timer} ${styles.glassContainer}`}>
-          {disableTimer ? "no time limit" : `Time left - ${timeLeft} seconds`}
+      {showInvalidModal ? (
+        <div aria-hidden="true" className={styles.overlay}>
+          <div className={styles.centeredDiv}>
+            <div className={styles.modalHeader}>
+              <p className={styles.p1}>Invalid Link!</p>
+            </div>
+            <button onClick={handleRestart} className="button-1">
+              Main Page
+            </button>
+          </div>
         </div>
-        <div className={`${styles.username_tile} ${styles.glassContainer}`}>
-          Playing as: {username}
-        </div>
-        <div className={styles.glassContainer}>
-          <h1 className={styles.title}>Question {gameLevel}/15</h1>
-          {/* <div className={styles.prizeLevel}>
-            Prize won: ${gamePrize.toLocaleString()}
+      ) : (
+        <div
+          className={`${styles.gameContainer} ${
+            showRestartPopup ||
+            showWinnerModal ||
+            show_aud_poll_modal ||
+            showLoserModal
+              ? styles.blur
+              : ""
+          }`}
+        >
+          <div className={`${styles.timer} ${styles.glassContainer}`}>
+            {disableTimer ? "no time limit" : `Time left - ${timeLeft} seconds`}
+          </div>
+          <div className={`${styles.username_tile} ${styles.glassContainer}`}>
+            Playing as: {username}
+          </div>
+          <div className={styles.glassContainer}>
+            <h1 className={styles.title}>Question {gameLevel}/15</h1>
+            {/* <div className={styles.prizeLevel}>
+          Prize won: ${gamePrize.toLocaleString()}
+        </div> */}
+          </div>
+          <div className={styles.content}>
+            <main>
+              <div className={styles.questionBox}>
+                <p>{question}</p>
+              </div>
+              <div className={styles.answersGrid}>
+                {options.map((option, index) => (
+                  <button
+                    key={index}
+                    className={`${styles.answerBtn} ${
+                      index % 2 === 0
+                        ? styles.answerBtn_left
+                        : styles.answerBtn_right
+                    } ${
+                      fifty_fifty_disabled_indices.includes(index)
+                        ? styles.disabled_option
+                        : ""
+                    }`}
+                    onClick={() => handleOptionClick(option)}
+                  >
+                    {option_names[index]}
+                    {option}
+                  </button>
+                ))}
+              </div>
+              {/* <div className={styles.lifeLineHeader}>
+            Got stuck? Use your life lines!
           </div> */}
-        </div>
-        <div className={styles.content}>
-          <main>
-            <div className={styles.questionBox}>
-              <p>{question}</p>
-            </div>
-            <div className={styles.answersGrid}>
-              {options.map((option, index) => (
-                <button
-                  key={index}
-                  className={`${styles.answerBtn} ${
-                    index % 2 === 0
-                      ? styles.answerBtn_left
-                      : styles.answerBtn_right
-                  } ${
-                    fifty_fifty_disabled_indices.includes(index)
-                      ? styles.disabled_option
-                      : ""
-                  }`}
-                  onClick={() => handleOptionClick(option)}
-                >
-                  {option_names[index]}
-                  {option}
-                </button>
-              ))}
-            </div>
-            {/* <div className={styles.lifeLineHeader}>
-              Got stuck? Use your life lines!
-            </div> */}
-            {/* <div className={styles.lifelines}>
-              <button
-                className={`${styles.lifelineBtn} ${
-                  fifty_fifty_used ? styles.disabledLifeline : ""
-                }`}
-                data-hover-text="Removes two wrong answers"
-                onClick={() => {
-                  executeFiftyFiftyLifeline();
-                  setFiftyFiftyUsed(true);
-                }}
-              >
-                50:50
-              </button>
-              <button
-                className={`${styles.lifelineBtn} ${
-                  flip_q_used ? styles.disabledLifeline : ""
-                }`}
-                data-hover-text="Answer another question"
-                onClick={() => {
-                  fetchRandomQuestion(gameLevel, true);
-                  setFlipQuestionUsed(true);
-                  setFiftyFiftyDisabledIndices([]);
-                }}
-              >
-                Flip the question
-              </button>
-              <button
-                className={`${styles.lifelineBtn} ${
-                  aud_poll_used ? styles.disabledLifeline : ""
-                }`}
-                data-hover-text="Ask the audience for help"
-                onClick={() => {
-                  setShowAudiPollModal(true);
-                  getFourNumbersSummingTo100();
-                  setAudiencePollUsed(true);
-                }}
-              >
-                Ask the Audience
-              </button>
-            </div> */}
-            <div
-              style={{
-                textAlign: "center",
-                cursor: "pointer",
-                textDecoration: "underline",
+              {/* <div className={styles.lifelines}>
+            <button
+              className={`${styles.lifelineBtn} ${
+                fifty_fifty_used ? styles.disabledLifeline : ""
+              }`}
+              data-hover-text="Removes two wrong answers"
+              onClick={() => {
+                executeFiftyFiftyLifeline();
+                setFiftyFiftyUsed(true);
               }}
             >
-              <p
-                onClick={() => {
-                  setShowRulesModal(true);
+              50:50
+            </button>
+            <button
+              className={`${styles.lifelineBtn} ${
+                flip_q_used ? styles.disabledLifeline : ""
+              }`}
+              data-hover-text="Answer another question"
+              onClick={() => {
+                fetchRandomQuestion(gameLevel, true);
+                setFlipQuestionUsed(true);
+                setFiftyFiftyDisabledIndices([]);
+              }}
+            >
+              Flip the question
+            </button>
+            <button
+              className={`${styles.lifelineBtn} ${
+                aud_poll_used ? styles.disabledLifeline : ""
+              }`}
+              data-hover-text="Ask the audience for help"
+              onClick={() => {
+                setShowAudiPollModal(true);
+                getFourNumbersSummingTo100();
+                setAudiencePollUsed(true);
+              }}
+            >
+              Ask the Audience
+            </button>
+          </div> */}
+              <div
+                style={{
+                  textAlign: "center",
+                  cursor: "pointer",
+                  textDecoration: "underline",
                 }}
               >
-                Show rules
-              </p>
-            </div>
-          </main>
+                <p
+                  onClick={() => {
+                    setShowRulesModal(true);
+                  }}
+                >
+                  Show rules
+                </p>
+              </div>
+            </main>
+          </div>
         </div>
-      </div>
+      )}
+
       {showRestartPopup && (
         <div aria-hidden="true" className={styles.overlay}>
           <div className={styles.centeredDiv}>
