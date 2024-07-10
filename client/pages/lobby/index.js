@@ -9,16 +9,40 @@ export default function Home() {
   const [room, setRoom] = useState("");
   const [socketID, setSocketID] = useState("");
   const [messages, setMessages] = useState([]);
-  const [roomName, setRoomName] = useState("");
-  const [username, setUsername] = useState("");
+  const [roomName, setRoomName] = useState(null);
+  const [username, setUsername] = useState(null);
   const [roomUsers, setRoomUsers] = useState([]);
-
+  const { roomid } = router.query;
+  async function checkRoom(room) {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/check-room/${room}`
+      );
+      const data = await response.json();
+      return data.exists;
+    } catch (error) {
+      console.error("Error checking room:", error);
+      return false;
+    }
+  }
   useEffect(() => {
+    const fetchRoomStatus = async () => {
+      const exists = await checkRoom(roomid);
+      if (!exists) {
+        setShowInvalidModal(true);
+        setDisableTimer(true);
+      } else {
+        console.log("setting room as", roomid);
+        setRoomName(roomid);
+      }
+    };
+
+    fetchRoomStatus();
     const newSocket = io(process.env.NEXT_PUBLIC_SERVER_URL, {
       transports: ["websocket"],
       reconnection: false,
     });
-// const newSocket = initSocket();
+    // const newSocket = initSocket();
     setSocket(newSocket);
     newSocket.on("connect", () => {
       setSocketID(newSocket.id);
@@ -26,7 +50,7 @@ export default function Home() {
     });
 
     newSocket.on("receive-message", (data) => {
-      console.log('someine')
+      console.log("someine");
       setMessages((prev) => [...prev, data]);
     });
     newSocket.on("receive-ff-winner", (data) => {
@@ -40,7 +64,18 @@ export default function Home() {
       newSocket.disconnect();
     };
   }, []);
-
+  useEffect(() => {
+    let user_name = window?.localStorage.getItem("kbc_name");
+    if (user_name) {
+      setUsername(user_name);
+      if (room != null && username !== null) {
+        socket.emit("join-room", { room: roomName, username });
+      }
+    } else {
+      setShowInvalidModal(true);
+      setDisableTimer(true);
+    }
+  }, [room, username]);
   const joinRoomHandler = (e) => {
     e.preventDefault();
     window?.localStorage.setItem("kbc_name", username);
