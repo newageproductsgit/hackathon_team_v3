@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { io } from "socket.io-client";
-import { getSocket, initSocket } from "@/lib/socket_client";
+import styles from "../play/question.module.css";
 
 export default function Home() {
   const [socket, setSocket] = useState(null);
@@ -33,7 +33,6 @@ export default function Home() {
       const exists = await checkRoom(roomid);
       if (!exists) {
         setShowInvalidModal(true);
-        setDisableTimer(true);
       } else {
         console.log("setting room as", roomid);
         setRoomName(roomid);
@@ -87,7 +86,9 @@ export default function Home() {
       setRoom(roomName);
     }
   };
-
+  const handleRestart = () => {
+    router.replace("/");
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     if (message && room && username) {
