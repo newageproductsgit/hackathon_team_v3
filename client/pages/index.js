@@ -256,9 +256,9 @@ export default function Home() {
           </div>
         </div>
       )}
-      {/* <div className="chat_window_container">
+      <div className="chat_window_container">
         <ChatWindow />
-      </div> */}
+      </div>
     </>
   );
 }
