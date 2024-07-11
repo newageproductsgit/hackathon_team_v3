@@ -38,6 +38,9 @@ const GameQuestionContainer = ({ questions }) => {
   const mediumQuestions = questions[1]?.medium || [];
   const hardQuestions = questions[2]?.hard || [];
 
+  const bgaudioRef = useRef(null);
+  const audioLostRef = useRef(null);
+  const audioWonRef = useRef(null);
   const router = useRouter();
   const { roomid } = router.query;
   async function checkRoom(room) {
@@ -136,10 +139,13 @@ const GameQuestionContainer = ({ questions }) => {
     let questionSet;
     let previous_questions = questionsAsked;
     if (gameLevel <= 5) {
+      setTimeLeft(60);
       questionSet = easyQuestions;
     } else if (gameLevel < 10) {
+      setTimeLeft(30);
       questionSet = mediumQuestions;
     } else {
+      setDisableTimer(true);
       questionSet = hardQuestions;
     }
 
@@ -196,7 +202,37 @@ const GameQuestionContainer = ({ questions }) => {
 
     setAudiPollResult([num1, num2, num3, num4]);
   }
+  const playBGAudio = async () => {
+    if (bgaudioRef.current) {
+      try {
+        bgaudioRef.current.volume = "0.2";
+        await bgaudioRef.current.play();
+      } catch (err) {
+        console.error("Failed to play audio", err);
+      }
+    }
+  };
 
+  const playLostAudio = async () => {
+    if (audioLostRef.current) {
+      try {
+        audioLostRef.current.volume = "0.5";
+        await audioLostRef.current.play();
+      } catch (err) {
+        console.error("Failed to play audio", err);
+      }
+    }
+  };
+  const playWonAudio = async () => {
+    if (audioWonRef.current) {
+      try {
+        audioWonRef.current.volume = "0.5";
+        await audioWonRef.current.play();
+      } catch (err) {
+        console.error("Failed to play audio", err);
+      }
+    }
+  };
   const handleOptionClick = (selectedAnswer) => {
     if (selectedAnswer === answer) {
       setTimeout(() => {
@@ -249,6 +285,7 @@ const GameQuestionContainer = ({ questions }) => {
         }
         if (gameLevel == 15) {
           setShowWinnerModal(true);
+          playWonAudio();
           return;
         }
         fetchRandomQuestion(gameLevel + 1);
@@ -256,6 +293,7 @@ const GameQuestionContainer = ({ questions }) => {
     } else {
       // Handle incorrect answer logic if needed
       // For example, end game or show modal
+      playLostAudio();
       let prize =
         gameLevel + 1 == 1
           ? 0
@@ -303,12 +341,27 @@ const GameQuestionContainer = ({ questions }) => {
         </div>
       ) : (
         <div
+          onClick={playBGAudio}
           className={`${styles.gameContainer} ${
             showRestartPopup || showWinnerModal || show_aud_poll_modal
               ? styles.blur
               : ""
           }`}
         >
+          <audio
+            ref={bgaudioRef}
+            src={`/assets/first_ten.mp3`}
+            controls
+            loop
+            hidden
+          />
+          <audio ref={audioLostRef} src={`/assets/lost.mp3`} controls hidden />
+          <audio
+            ref={audioWonRef}
+            src={`/assets/kbc-awesome-5410.mp3`}
+            controls
+            hidden
+          />
           <div className={`${styles.timer} ${styles.glassContainer}`}>
             {disableTimer ? "no time limit" : `Time left - ${timeLeft} seconds`}
           </div>
@@ -657,10 +710,10 @@ const GameQuestionContainer = ({ questions }) => {
                     </li>
                     <li>
                       Hotseat round: <br />
-                        1. 60 seconds each for 1st five questions.
+                      1. 60 seconds each for 1st five questions.
                       <br />
-                        2. 30 seconds each for next five questions. <br />
-                        3. No time limit for last five questions.
+                      2. 30 seconds each for next five questions. <br />
+                      3. No time limit for last five questions.
                     </li>
                   </ul>
                 </div>
