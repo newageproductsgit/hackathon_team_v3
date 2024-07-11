@@ -227,7 +227,6 @@ export default function Home() {
                     <td>1,000</td>
                   </tr>
                 </table>
-
                 <div>
                   <p className="p2">Life Lines</p>
                   <ul>
@@ -242,6 +241,22 @@ export default function Home() {
                     <li>
                       Audience Poll: Shows the percentage of the audience that
                       chose each option.
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <p className="p2">Timer rules</p>
+                  <ul>
+                    <li>
+                      Fastest Finger round: 60 seconds to answer 5 questions.
+                      First one with all correct answers win.
+                    </li>
+                    <li>
+                      Hotseat round: <br />
+                        1. 60 seconds each for 1st five questions.
+                      <br />
+                        2. 30 seconds each for next five questions. <br />
+                        3. No time limit for last five questions.
                     </li>
                   </ul>
                 </div>
