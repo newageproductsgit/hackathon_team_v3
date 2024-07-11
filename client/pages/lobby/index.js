@@ -226,13 +226,13 @@ export default function Home() {
               justifyContent: "center",
             }}
           >
-            <div
+            {/* <div
               className={styles.glassContainer}
               style={{ height: "300px", overflowY: "scroll" }}
             >
               <h3>Room events</h3>
               <h3>Winner001 is currently at question 10/15</h3>
-            </div>
+            </div> */}
           </div>
         </div>
       )}
