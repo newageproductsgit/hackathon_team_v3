@@ -560,12 +560,6 @@ const GameQuestionContainer = ({ questions }) => {
                 </div>
               </p>
             </div>
-            <button
-              className="modal_play_button"
-              onClick={() => router.push(`/play/single-player/game`)}
-            >
-              PLAY!
-            </button>
           </div>
         </div>
       )}
