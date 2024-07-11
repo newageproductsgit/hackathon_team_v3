@@ -133,9 +133,6 @@ export default function Home() {
       ) : (
         <div>
           <h1>Game Lobby {room}</h1>
-          {isadmin && (
-            <button onClick={() => handlerGameStart()}>Start Game</button>
-          )}
           {/* <div>Socket ID: {socketID}</div>
 
           <form onSubmit={joinRoomHandler}>
@@ -164,6 +161,14 @@ export default function Home() {
                 gap: "10px",
               }}
             >
+              {isadmin && (
+                <button
+                  className="modal_play_button"
+                  onClick={() => handlerGameStart()}
+                >
+                  Start Game!
+                </button>
+              )}
               <div
                 className={styles.glassContainer}
                 style={{ textAlign: "center" }}
@@ -177,16 +182,7 @@ export default function Home() {
                   </>
                 ))}
               </div>
-              <div
-                className={styles.glassContainer}
-                style={{
-                  width: "20%",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "stretch",
-                }}
-              >
+              <div className={`${styles.glassContainer} ${styles.lobby_chat_window}`}>
                 <div style={{ textAlign: "center" }}>
                   Chat with your friends!
                 </div>
@@ -198,7 +194,7 @@ export default function Home() {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                   />
-                  <button type="submit">Send</button>
+                  <button type="submit">&#10148;</button>
                 </form>
                 <div
                   style={{
