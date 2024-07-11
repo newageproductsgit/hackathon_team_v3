@@ -392,7 +392,7 @@ const GameQuestionContainer = ({ questions }) => {
         >
           <audio
             ref={bgaudioRef}
-            src={`/assets/first_ten.mp3`}
+            src={`/assets/ff.mp3`}
             controls
             loop
             hidden
