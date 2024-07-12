@@ -516,7 +516,7 @@ const GameQuestionContainer = ({ questions }) => {
               <hr />
               <p className={styles.p2}>Better luck next time!</p>
               <p className={styles.p3}>
-                Prize won: ${gamePrize.toLocaleString()}
+                You lost the fastest finger round!
               </p>
               <p className={styles.p3}>
                 <a
