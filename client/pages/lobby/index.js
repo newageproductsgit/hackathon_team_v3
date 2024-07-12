@@ -179,6 +179,7 @@ export default function Home() {
                     {index + 1}. {user.username}
                     {user.role === "admin" && <span> (admin)</span>}
                     {user.role === "joinee" && <span> (joinee)</span>}
+                    <br />
                   </>
                 ))}
               </div>
