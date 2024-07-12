@@ -132,7 +132,13 @@ export default function Home() {
         </div>
       ) : (
         <div>
-          <h1>Game Lobby {room}</h1>
+          <h1
+            style={{
+              textTransform: "capitalize",
+            }}
+          >
+            Game Lobby - {room}
+          </h1>
           {/* <div>Socket ID: {socketID}</div>
 
           <form onSubmit={joinRoomHandler}>
@@ -183,8 +189,10 @@ export default function Home() {
                   </>
                 ))}
               </div>
-              <div className={`${styles.glassContainer} ${styles.lobby_chat_window}`}>
-                <div style={{ textAlign: "center" }}>
+              <div
+                className={`${styles.glassContainer} ${styles.lobby_chat_window}`}
+              >
+                <div style={{ textAlign: "center", marginBottom: "10px" }}>
                   Chat with your friends!
                 </div>
                 <form onSubmit={handleSubmit} style={{ display: "flex" }}>

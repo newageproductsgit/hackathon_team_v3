@@ -113,6 +113,7 @@ export default function Home() {
                 fontWeight: "bold",
                 textDecoration: "underline",
                 cursor: "pointer",
+                marginTop: "15px"
               }}
               onClick={() => {
                 setShowCustomStartModal(true);
