@@ -8,11 +8,11 @@ export default function CreateRoom({ socket, roomUsers }) {
   const [name, setName] = useState("");
   const router = useRouter();
   const createRoom = (e) => {
+    e.preventDefault();
     if (!roomName || !name) {
       alert("please enter missing details");
       return;
     }
-    e.preventDefault();
     window?.localStorage.setItem("kbc_name", name);
     socket.emit("join-room", {
       room: roomName,
